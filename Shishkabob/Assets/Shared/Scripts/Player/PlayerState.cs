@@ -13,6 +13,11 @@ public class PlayerState : MonoBehaviour
     public UnityEvent<State> onStateChanged;
     public UnityEvent<bool> onGroundedChanged;
 
+    private void Start() {
+        state = State.Active;
+        grounded = true;
+    }
+
     public void SetGrounded(bool b)
     {
         if(b != grounded){

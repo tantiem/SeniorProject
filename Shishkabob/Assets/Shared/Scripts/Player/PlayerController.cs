@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour
         mover.Inititalize(player);
         
         inputInterface = player.GetComponent<PlayerInputInterface>();
+
+        SetUpCallbacks();
     }
 
     void SetUpCallbacks()
@@ -46,6 +48,7 @@ public class PlayerController : MonoBehaviour
 
     void HandleMoveAimVector(Vector2 stick)
     {
+        Debug.Log("Happening");
         //Regardless of state, call SetAim
         SetAim(stick);
         //If you are in the Active state, check if you should duck or walk.
@@ -65,17 +68,35 @@ public class PlayerController : MonoBehaviour
                     Walk(stick.x);
                 }
             }
+            else
+            {
+                AirWalk(stick.x);
+            }
+        }
+        //if player is in a ducking state, check if we should rise them up from their ducking state
+        if(state.GetState() == PlayerState.State.Ducking)
+        {
+            //realistically, should already be grounded, but we are going to double check.
+            if(state.IsGrounded())
+            {
+                if(stick.y > data.crouchThreshold)
+                {
+                    InitiateGetUp();
+                }
+            }
         }
     }
 
     void Walk(float inputX)
     {
         //state should have already been checked.
+        mover.SetHorizontalVelocity(inputX * data.walkSpeed);
     }
 
     void AirWalk(float inputX)
     {
         //state should already be checked.
+        mover.SetHorizontalVelocity(inputX * data.airWalkSpeed);
     }
 
     void SetAim(Vector2 stick)
@@ -98,6 +119,7 @@ public class PlayerController : MonoBehaviour
         //Set state to ducking
         if(state.IsGrounded())
         {
+            mover.SetHorizontalVelocity(0);
             state.SetState(PlayerState.State.Ducking);
         }
         
@@ -112,6 +134,15 @@ public class PlayerController : MonoBehaviour
     {
         //the cock back of a slash, either leading to a stab throw or a stab.
         //valid to be done from Active- grounded or not
+    }
+    void InitiateGetUp()
+    {
+        //Found out this is necessary lol, basically change state to active from some other state.
+        if(state.GetState() == PlayerState.State.Ducking)
+        {
+            //trigger the correct transition animation maybe?
+            state.SetState(PlayerState.State.Active);
+        }
     }
     void SlashThrow()
     {
