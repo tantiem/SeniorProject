@@ -4,10 +4,12 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(PlayerState))]
+[RequireComponent(typeof(PlayerMover))]
 public class PlayerController : MonoBehaviour
 {
     public GameObject player;
     PlayerState state;
+    PlayerMover mover;
     PlayerInputInterface inputInterface;
 
     public PlayerControllerDataSO data;
@@ -15,6 +17,9 @@ public class PlayerController : MonoBehaviour
     private void Awake() 
     {
         state = GetComponent<PlayerState>();
+        mover = GetComponent<PlayerMover>();
+        mover.Inititalize(player);
+        
         inputInterface = player.GetComponent<PlayerInputInterface>();
     }
 
@@ -57,7 +62,7 @@ public class PlayerController : MonoBehaviour
                 //Otherwise, you should probably be walking
                 else
                 {
-                   Walk(stick.x);
+                    Walk(stick.x);
                 }
             }
         }

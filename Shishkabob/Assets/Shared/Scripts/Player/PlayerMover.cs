@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class PlayerMover : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    Rigidbody2D rb;
 
-    // Update is called once per frame
-    void Update()
+    public void Inititalize(GameObject player)
     {
-        
+        rb = player.GetComponent<Rigidbody2D>();
+    }
+    private void Update() {
+        rb.velocity = Vector2.up;
     }
 }
