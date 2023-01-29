@@ -7,23 +7,17 @@ public class PlayerInputInterface : MonoBehaviour
 {
     public delegate void ActionHandler();
     public delegate void ActionAxisHandler(Vector2 axis);
+    public delegate void ActionStateHandler(InputAction.CallbackContext context);
     public event ActionAxisHandler onMoveAimAxisUpdated;
 
-    public event ActionHandler onSlashCocked;
-    public event ActionHandler onSlashThrow;
-    public event ActionHandler onSlash;
-
-    public event ActionHandler onStabCocked;
-    public event ActionHandler onStabThrow;
-    public event ActionHandler onStab;
+    public event ActionStateHandler onSlashActionUpdated;
+    public event ActionStateHandler onStabActionUpdated;
+    public event ActionStateHandler onJumpActionUpdated;
 
     public event ActionHandler onKick;
     public event ActionHandler onTaunt;
-    public event ActionHandler onJumpStart;
-    public event ActionHandler onJumpStop;
 
-    public event ActionHandler onStartBlock;
-    public event ActionHandler onStopBlock;
+    public event ActionHandler onBlock;
 
     public event ActionHandler onAccelerate;
     
@@ -44,29 +38,7 @@ public class PlayerInputInterface : MonoBehaviour
         //On started: cock back
         //On performed: slash throw
         //On canceled: regular slash
-        switch(context.phase)
-        {
-            case InputActionPhase.Started:
-            {
-                onSlashCocked?.Invoke();
-                break;
-            }
-            case InputActionPhase.Performed:
-            {
-                onSlashThrow?.Invoke();
-                break;
-            }
-            case InputActionPhase.Canceled:
-            {
-                onSlash?.Invoke();
-                break;
-            }
-            default:
-            {
-                Debug.LogWarning("Unkown action status on Slash/Throw", this);
-                break;
-            }
-        }
+        onSlashActionUpdated?.Invoke(context);
 
     }
     public void Stab(InputAction.CallbackContext context)
@@ -75,29 +47,7 @@ public class PlayerInputInterface : MonoBehaviour
     }
     public void StabThrow(InputAction.CallbackContext context)
     {
-        switch(context.phase)
-        {
-            case InputActionPhase.Started:
-            {
-                onSlashCocked?.Invoke();
-                break;
-            }
-            case InputActionPhase.Performed:
-            {
-                onStabThrow?.Invoke();
-                break;
-            }
-            case InputActionPhase.Canceled:
-            {
-                onStab?.Invoke();
-                break;
-            }
-            default:
-            {
-                Debug.LogWarning("Unkown action status on Stab/Throw", this);
-                break;
-            }
-        }
+        onStabActionUpdated?.Invoke(context);
     }
     public void Kick(InputAction.CallbackContext context)
     {
@@ -109,25 +59,14 @@ public class PlayerInputInterface : MonoBehaviour
     }
     public void Block(InputAction.CallbackContext context)
     {
-        if(context.canceled)
+        if(context.performed)
         {
-            onStopBlock?.Invoke();
-        }
-        else if(context.performed)
-        {
-            onStartBlock?.Invoke();
+            onBlock?.Invoke();
         }
     }
     public void Jump(InputAction.CallbackContext context)
     {
-        if(context.canceled)
-        {
-            onJumpStop?.Invoke();
-        }
-        else if(context.performed)
-        {
-            onJumpStart?.Invoke();
-        }
+        onJumpActionUpdated?.Invoke(context);
 
     }
     public void Taunt(InputAction.CallbackContext context)

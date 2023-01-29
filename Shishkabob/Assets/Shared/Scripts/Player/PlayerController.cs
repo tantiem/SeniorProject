@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(PlayerState))]
 public class PlayerController : MonoBehaviour
@@ -21,6 +22,21 @@ public class PlayerController : MonoBehaviour
     {
         //Move / Aim
         inputInterface.onMoveAimAxisUpdated += HandleMoveAimVector;
+
+        //Slash stuff
+        inputInterface.onSlashActionUpdated += HandleSlashActions;
+
+        //Stab stuff
+        inputInterface.onStabActionUpdated += HandleStabActions;
+
+        //Jump stuff
+        inputInterface.onJumpActionUpdated += HandleJump;
+
+        //Other one off actions
+        inputInterface.onBlock += BlockStart;
+        inputInterface.onKick += Kick;
+        inputInterface.onTaunt += Taunt;
+        inputInterface.onAccelerate += Accelerate;
     }
 
     void HandleMoveAimVector(Vector2 stick)
@@ -49,15 +65,25 @@ public class PlayerController : MonoBehaviour
 
     void Walk(float inputX)
     {
-
+        //state should have already been checked.
     }
 
     void AirWalk(float inputX)
     {
-        
+        //state should already be checked.
     }
 
     void SetAim(Vector2 stick)
+    {
+        //no state checks required, the aim should be an always tracked thing.
+    }
+
+    void HandleSlashActions(InputAction.CallbackContext context)
+    {
+
+    }
+
+    void HandleStabActions(InputAction.CallbackContext context)
     {
 
     }
@@ -72,50 +98,69 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    void InitiateSlash()
+    void InitiateSlashAction()
     {
-
+        //the cock back of a slash, either leading to a slash throw or a slash.
+        //valid to be done from Active- grounded or not
     }
-    void InitiateStab()
+    void InitiateStabAction()
     {
-
+        //the cock back of a slash, either leading to a stab throw or a stab.
+        //valid to be done from Active- grounded or not
     }
-    void InitiateSlashThrow()
+    void SlashThrow()
     {
-
+        //should already have validated state.
     }
-    void InitiateStabThrow()
+    void Slash()
     {
-
+        //should already have validated state.
     }
-    void InitiateLowStab()
+    void StabThrow()
     {
-
+        //should already have validated state.
     }
-    void InitiateLowSlash()
+
+    void LowStab()
     {
-
+        //Valid states to low stab from:
+        //Ducking - grounded (ducking should only be available when grounded)
     }
-    void Block()
+    void LowSlash()
     {
-
+        //Valid states to low slash from:
+        //Ducking - grounded (ducking should only be available when grounded)
     }
+
+    /////////////Simple one off actions, no intermediary handler/////////////
+    void BlockStart()
+    {
+        //Valid states to block from:
+        //Active- grounded or not
+    }
+
     void Taunt()
     {
-
+        //Valid states to taunt from:
+        //Not blocking or stunned, grounded or not.
     }
-    void Jump()
+    void HandleJump(InputAction.CallbackContext context)
     {
         //Valid states to jump from:
-        //Active,Ducking if grounded
+        //Active,Ducking- if grounded
+
+        //if action is performed / started, start jumping if valid
+        //if action is canceled, and the time since the last jump start is less than the time it takes
+        //to complete a full jump, do an early stop on the jump height.
     }
     void Kick()
     {
-
+        //Valid states to kick from:
+        //Active -grounded or not
     }
     void Accelerate()
     {
-        
+        //WIP, but probably from any state that isnt blocking or stunned.
     }
 
 
