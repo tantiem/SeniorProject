@@ -1,2 +1,3 @@
 # SeniorProject
- Senior project for graduating class 2023 Utah Tech University
+ Senior project for my Computer Science degree. 
+ More info later.
