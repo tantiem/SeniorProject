@@ -5,6 +5,13 @@ using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(PlayerState))]
 [RequireComponent(typeof(PlayerMover))]
+///<summary>
+///Handle functions control all input for actions that have multiple possible states. 
+///Each slash or stab based attack is built to have a fakeout, being that
+///holding the action is not enough to perform it, but letting go.
+///When standing, holding for long enough initiates the throw
+///when ducking, holding the sword back is a fake out, and letting go performs the action
+///</summary>
 public class PlayerController : MonoBehaviour
 {
     public GameObject player;
@@ -18,6 +25,7 @@ public class PlayerController : MonoBehaviour
 
     ///action variables
     bool justJumped;
+    bool aboutToThrow;
 
 
     private void Awake() 
@@ -107,80 +115,108 @@ public class PlayerController : MonoBehaviour
 
     void HandleSlashActions(InputAction.CallbackContext context)
     {
-
+        if(state.GetState() == PlayerState.State.Blocking || state.GetState() == PlayerState.State.Stunned)
+        {
+            //early return, this should never be allowed on attacks. Or really anything.
+            return;
+        }
+        else if(state.GetState() == PlayerState.State.Active)
+        {
+            //slash actions here
+            //does not matter if we are grounded or not.
+            if(context.started)
+            {
+                InitiateSlashAction();
+            }
+            else if(context.performed)
+            {
+                //this should be the throw action performed
+                aboutToThrow = true;
+            }
+            else if(context.canceled)
+            {
+                //this is the let go, if we are about to throw, do a throw. otherwise, just slash.
+                if(aboutToThrow)
+                {
+                    aboutToThrow = false;
+                    SlashThrow();
+                }
+                else
+                {
+                    Slash();
+                }
+            }
+        }
+        else if(state.GetState() == PlayerState.State.Ducking)
+        {
+            //low slash action here
+            //if we are ducking , we should be grounded. But just in case:
+            if(state.IsGrounded())
+            {
+                if(context.started)
+                {
+                    InitiateLowSlash();
+                }
+                else if(context.canceled)
+                {
+                    LowSlash();
+                }
+            }
+        }
     }
 
     void HandleStabActions(InputAction.CallbackContext context)
     {
-
-    }
-
-    void InitiateDuck()
-    {
-        //Set state to ducking
-        if(state.IsGrounded())
+        if(state.GetState() == PlayerState.State.Blocking || state.GetState() == PlayerState.State.Stunned)
         {
-            mover.SetHorizontalInputVelocity(0);
-            state.SetState(PlayerState.State.Ducking);
+            //early return, this should never be allowed on attacks. Or really anything.
+            return;
         }
-        
-    }
-
-    void InitiateSlashAction()
-    {
-        //the cock back of a slash, either leading to a slash throw or a slash.
-        //valid to be done from Active- grounded or not
-    }
-    void InitiateStabAction()
-    {
-        //the cock back of a slash, either leading to a stab throw or a stab.
-        //valid to be done from Active- grounded or not
-    }
-    void InitiateGetUp()
-    {
-        //Found out this is necessary lol, basically change state to active from some other state.
-        if(state.GetState() == PlayerState.State.Ducking)
+        else if(state.GetState() == PlayerState.State.Active)
         {
-            //trigger the correct transition animation maybe?
-            state.SetState(PlayerState.State.Active);
+            //stab actions here
+            //does not matter if we are grounded or not.
+            if(context.started)
+            {
+                InitiateStabAction();
+            }
+            else if(context.performed)
+            {
+                //this should be the throw action performed
+                aboutToThrow = true;
+            }
+            else if(context.canceled)
+            {
+                //this is the let go, if we are about to throw, do a throw. otherwise, just slash.
+                if(aboutToThrow)
+                {
+                    aboutToThrow = false;
+                    StabThrow();
+                }
+                else
+                {
+                    Stab();
+                }
+            }
+        }
+        else if(state.GetState() == PlayerState.State.Ducking)
+        {
+            //low slash action here
+            //if we are ducking , we should be grounded. But just in case:
+            if(state.IsGrounded())
+            {
+                if(context.started)
+                {
+                    InitiateLowStab();
+                }
+                else if(context.canceled)
+                {
+                    LowStab();
+                }
+            }
         }
     }
-    void SlashThrow()
-    {
-        //should already have validated state.
-    }
-    void Slash()
-    {
-        //should already have validated state.
-    }
-    void StabThrow()
-    {
-        //should already have validated state.
-    }
 
-    void LowStab()
-    {
-        //Valid states to low stab from:
-        //Ducking - grounded (ducking should only be available when grounded)
-    }
-    void LowSlash()
-    {
-        //Valid states to low slash from:
-        //Ducking - grounded (ducking should only be available when grounded)
-    }
-
-    /////////////Simple one off actions, no intermediary handler/////////////
-    void BlockStart()
-    {
-        //Valid states to block from:
-        //Active- grounded or not
-    }
-
-    void Taunt()
-    {
-        //Valid states to taunt from:
-        //Not blocking or stunned, grounded or not.
-    }
     void HandleJump(InputAction.CallbackContext context)
     {
         //Valid states to jump from:
@@ -218,6 +254,97 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
+    /////////////////////////////////////////////////////////////////////////
+    ///All second hand action responses//////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    void InitiateDuck()
+    {
+        //Set state to ducking
+        if(state.IsGrounded())
+        {
+            mover.SetHorizontalInputVelocity(0);
+            state.SetState(PlayerState.State.Ducking);
+        }
+        
+    }
+
+    void InitiateSlashAction()
+    {
+        //the cock back of a slash, either leading to a slash throw or a slash.
+        //valid to be done from Active- grounded or not
+    }
+    void InitiateStabAction()
+    {
+        //the cock back of a slash, either leading to a stab throw or a stab.
+        //valid to be done from Active- grounded or not
+    }
+    void InitiateGetUp()
+    {
+        //Found out this is necessary lol, basically change state to active from some other state.
+        if(state.GetState() == PlayerState.State.Ducking)
+        {
+            //trigger the correct transition animation maybe?
+            state.SetState(PlayerState.State.Active);
+        }
+    }
+    void SlashThrow()
+    {
+        //should already have validated state.
+        Debug.Log("SlashThrow");
+    }
+    void Slash()
+    {
+        //should already have validated state.
+        Debug.Log("Slash");
+    }
+    void Stab()
+    {
+        Debug.Log("Stab");
+    }
+    void StabThrow()
+    {
+        //should already have validated state.
+        Debug.Log("StabThrow");
+    }
+
+    void InitiateLowStab()
+    {
+        Debug.Log("InitiateLowStab");
+        //Valid states to low stab from:
+        //Ducking - grounded (ducking should only be available when grounded)
+    }
+    void InitiateLowSlash()
+    {
+        Debug.Log("InitiateLowSlash");
+        //Valid states to low slash from:
+        //Ducking - grounded (ducking should only be available when grounded)
+    }
+    void LowStab()
+    {
+        Debug.Log("LowStab");
+    }
+    void LowSlash()
+    {
+        Debug.Log("LowSlash");
+    }
+    /////////////////////////////////////////////////////////////////////////
+    /////////////Simple one off actions, no intermediary handler/////////////
+    /////////////////////////////////////////////////////////////////////////
+    void BlockStart()
+    {
+        Debug.Log("BlockStart");
+        //Valid states to block from:
+        //Active- grounded or not
+    }
+
+    void Taunt()
+    {
+        Debug.Log("Taunt");
+        //Valid states to taunt from:
+        //Not blocking or stunned, grounded or not.
+    }
+    
     void JumpStart(float jumpSpeed)
     {
         mover.SetInstantVelocityY(jumpSpeed);
@@ -228,6 +355,7 @@ public class PlayerController : MonoBehaviour
     }
     void Kick()
     {
+        Debug.Log("Kick");
         //Valid states to kick from:
         //Active -grounded or not
     }

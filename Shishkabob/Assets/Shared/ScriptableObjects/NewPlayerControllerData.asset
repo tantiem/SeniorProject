@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   crouchThreshold: -0.75
   walkSpeed: 6.27
-  walkAccelMult: 109.8
+  walkAccelMult: 7.3
   airWalkSpeed: 2
   airWalkSpeedMult: 6.95
   jumpSpeed: 10.41
