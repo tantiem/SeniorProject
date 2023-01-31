@@ -14,6 +14,12 @@ public class PlayerController : MonoBehaviour
 
     public PlayerControllerDataSO data;
 
+    public Vector2 aim;
+
+    ///action variables
+    bool justJumped;
+
+
     private void Awake() 
     {
         state = GetComponent<PlayerState>();
@@ -48,7 +54,6 @@ public class PlayerController : MonoBehaviour
 
     void HandleMoveAimVector(Vector2 stick)
     {
-        Debug.Log("Happening");
         //Regardless of state, call SetAim
         SetAim(stick);
         //If you are in the Active state, check if you should duck or walk.
@@ -70,7 +75,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                AirWalk(stick.x);
+                Walk(stick.x);
             }
         }
         //if player is in a ducking state, check if we should rise them up from their ducking state
@@ -90,18 +95,14 @@ public class PlayerController : MonoBehaviour
     void Walk(float inputX)
     {
         //state should have already been checked.
-        mover.SetHorizontalVelocity(inputX * data.walkSpeed);
-    }
-
-    void AirWalk(float inputX)
-    {
-        //state should already be checked.
-        mover.SetHorizontalVelocity(inputX * data.airWalkSpeed);
+        mover.SetAddititveHorizontalAirWalkVelocity(inputX * data.airWalkSpeed * data.airWalkSpeedMult, data.airWalkSpeed);
+        mover.SetHorizontalWalkVelocity(inputX * data.walkSpeed * data.walkAccelMult, Mathf.Abs(inputX)*data.walkSpeed);
     }
 
     void SetAim(Vector2 stick)
     {
         //no state checks required, the aim should be an always tracked thing.
+        aim = stick;
     }
 
     void HandleSlashActions(InputAction.CallbackContext context)
@@ -119,7 +120,7 @@ public class PlayerController : MonoBehaviour
         //Set state to ducking
         if(state.IsGrounded())
         {
-            mover.SetHorizontalVelocity(0);
+            mover.SetHorizontalInputVelocity(0);
             state.SetState(PlayerState.State.Ducking);
         }
         
@@ -188,6 +189,42 @@ public class PlayerController : MonoBehaviour
         //if action is performed / started, start jumping if valid
         //if action is canceled, and the time since the last jump start is less than the time it takes
         //to complete a full jump, do an early stop on the jump height.
+        if(state.IsGrounded())
+        {
+            //if we are grounded, now to check if we are active or ducking. Both are valid.
+            if(state.GetState() == PlayerState.State.Active || state.GetState() == PlayerState.State.Ducking)
+            {
+                if(context.performed)
+                {
+                    JumpStart(data.jumpSpeed);
+                    //set just jumped true so the player can early cancel their jump
+                    justJumped = true;
+                }
+            }
+        }
+        else
+        {
+            if(state.GetState() == PlayerState.State.Active)
+            {
+                if(context.canceled)
+                {
+                    //Just jumped is a variable specifically for the early jump cancel
+                    if(justJumped)
+                    {
+                        justJumped = false;
+                        JumpStop(data.jumpEarlyStopSlowdownMult);
+                    }
+                }
+            }
+        }
+    }
+    void JumpStart(float jumpSpeed)
+    {
+        mover.SetInstantVelocityY(jumpSpeed);
+    }
+    void JumpStop(float jumpCancelMultiplier)
+    {
+        mover.EarlyJumpCancelSlowDown(jumpCancelMultiplier);
     }
     void Kick()
     {
@@ -197,6 +234,10 @@ public class PlayerController : MonoBehaviour
     void Accelerate()
     {
         //WIP, but probably from any state that isnt blocking or stunned.
+        if(state.GetState() != PlayerState.State.Blocking || state.GetState() != PlayerState.State.Stunned)
+        {
+            mover.AddVelocity(aim * data.accelerateActionMultiplier);
+        }
     }
 
 

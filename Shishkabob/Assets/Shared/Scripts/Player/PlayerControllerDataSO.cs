@@ -12,7 +12,11 @@ public class PlayerControllerDataSO : ScriptableObject
     //This is the negative axis input value of the left stick.
     public float crouchThreshold = -0.75f;
     public float walkSpeed = 1f;
+    public float walkAccelMult = 0.5f;
     public float airWalkSpeed = 0.1f;
+    public float airWalkSpeedMult = 0.5f;
     public float jumpSpeed = 5f;
+    public float jumpEarlyStopSlowdownMult = 0.4f;
     public float blockLength = 1f;
+    public float accelerateActionMultiplier = 1f;
 }

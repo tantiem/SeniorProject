@@ -49,4 +49,16 @@ public class PlayerState : MonoBehaviour
     //State tests to implement:
     //If not grounded, you cant crouch.
     //
+
+    ///BASIC REGROUNDING
+    private void OnCollisionEnter2D(Collision2D other) 
+    {
+        //since state handles grounded, makes sense it should enable it for ya when it makes sense to.
+        SetGrounded(true);
+    }
+
+    private void OnCollisionExit2D(Collision2D other) 
+    {
+        SetGrounded(false);
+    }
 }
