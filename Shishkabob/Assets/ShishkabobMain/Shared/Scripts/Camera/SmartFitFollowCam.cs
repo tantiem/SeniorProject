@@ -8,6 +8,7 @@ public class SmartFitFollowCam : MonoBehaviour
     Camera cam;
     Bounds camBounds;
     Vector2 centroid;
+    public float baseOrthoSize = 2f;
     public float acceleration;
     
 
@@ -20,8 +21,10 @@ public class SmartFitFollowCam : MonoBehaviour
     }
     private void FixedUpdate() 
     {
-        centroid = GetCentroid(POIs);
+        float averageDistance = 0f;
+        centroid = GetCentroid(POIs, out averageDistance);
         MoveToCentroid(acceleration,centroid);
+        cam.orthographicSize = baseOrthoSize + averageDistance;
     }
     Vector3 Vector2Pos(Vector3 v3pos, Vector3 target)
     {
@@ -31,11 +34,13 @@ public class SmartFitFollowCam : MonoBehaviour
     {
         camBounds = cam.GetBounds();
     }
-    Vector2 GetCentroid(List<Transform> points)
+    Vector2 GetCentroid(List<Transform> points, out float avgDistance)
     {
+        
         int size = points.Count;
         if(size == 1)
         {
+            avgDistance = 0;
             return points[0].position;
         }
         else
@@ -50,7 +55,10 @@ public class SmartFitFollowCam : MonoBehaviour
                 sumY += points[i].position.y;
             }
 
-            return new Vector2(sumX / size, sumY / size);
+            Vector2 centroid = new Vector2(sumX / size, sumY / size);
+            avgDistance = ((Vector2)points[1].position - centroid).magnitude;
+
+            return centroid;
         }
     }
     public void AddPOI(Transform poi)

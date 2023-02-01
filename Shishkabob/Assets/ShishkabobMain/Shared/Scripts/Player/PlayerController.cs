@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     public GameObject player;
     PlayerState state;
     PlayerMover mover;
+    PlayerFightingInterface fighter;
     PlayerInputInterface inputInterface;
 
     public PlayerControllerDataSO data;
@@ -25,13 +26,13 @@ public class PlayerController : MonoBehaviour
 
     ///action variables
     bool justJumped;
-    bool aboutToThrow;
 
 
     private void Awake() 
     {
         state = GetComponent<PlayerState>();
         mover = GetComponent<PlayerMover>();
+        fighter = GetComponent<PlayerFightingInterface>();
         mover.Inititalize(player);
         
         inputInterface = player.GetComponent<PlayerInputInterface>();
@@ -131,20 +132,11 @@ public class PlayerController : MonoBehaviour
             else if(context.performed)
             {
                 //this should be the throw action performed
-                aboutToThrow = true;
+                SlashThrow();
             }
             else if(context.canceled)
             {
-                //this is the let go, if we are about to throw, do a throw. otherwise, just slash.
-                if(aboutToThrow)
-                {
-                    aboutToThrow = false;
-                    SlashThrow();
-                }
-                else
-                {
-                    Slash();
-                }
+                Slash();
             }
         }
         else if(state.GetState() == PlayerState.State.Ducking)
@@ -157,7 +149,7 @@ public class PlayerController : MonoBehaviour
                 {
                     InitiateLowSlash();
                 }
-                else if(context.canceled)
+                else if(context.canceled || context.performed)
                 {
                     LowSlash();
                 }
@@ -182,21 +174,11 @@ public class PlayerController : MonoBehaviour
             }
             else if(context.performed)
             {
-                //this should be the throw action performed
-                aboutToThrow = true;
+                StabThrow();
             }
             else if(context.canceled)
             {
-                //this is the let go, if we are about to throw, do a throw. otherwise, just slash.
-                if(aboutToThrow)
-                {
-                    aboutToThrow = false;
-                    StabThrow();
-                }
-                else
-                {
-                    Stab();
-                }
+                Stab();
             }
         }
         else if(state.GetState() == PlayerState.State.Ducking)
@@ -209,7 +191,7 @@ public class PlayerController : MonoBehaviour
                 {
                     InitiateLowStab();
                 }
-                else if(context.canceled)
+                else if(context.canceled || context.performed)
                 {
                     LowStab();
                 }
@@ -273,11 +255,13 @@ public class PlayerController : MonoBehaviour
     {
         //the cock back of a slash, either leading to a slash throw or a slash.
         //valid to be done from Active- grounded or not
+        Debug.Log("InitiateSlashAction");
     }
     void InitiateStabAction()
     {
         //the cock back of a slash, either leading to a stab throw or a stab.
         //valid to be done from Active- grounded or not
+        Debug.Log("InitiateStabAction");
     }
     void InitiateGetUp()
     {
