@@ -281,6 +281,7 @@ public class PlayerController : MonoBehaviour
     {
         //should already have validated state.
         Debug.Log("Slash");
+        fighter.GenerateSlash(aim,0f);
     }
     void Stab()
     {
