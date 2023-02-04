@@ -6,15 +6,31 @@ public class PlayerFightingInterface : MonoBehaviour
 {
     public HitBox attackBox;
     public AttackData slashAttackData;
+    public AttackData stabAttackData;
 
-    public void GenerateSlash(Vector2 position,float speed)
+    public void GenerateSlash(Vector2 position,float speed,Vector2 rightAlign)
     {
-        GenerateAttack(slashAttackData,position,speed);
+        GenerateAttack(slashAttackData,position,speed,rightAlign);
     }
 
-    void GenerateAttack(AttackData data, Vector2 pos, float speed)
+    public void GenerateStab(Vector2 position, float speed,Vector2 rightAlign)
     {
-        attackBox.Generate(data.attackSize,data.attackDamage,pos,data.attackTime);
+        GenerateAttack(stabAttackData,position,speed,rightAlign);
+    }
+
+    public void GenerateLowStab(Vector2 position, float speed,Vector2 rightAlign)
+    {
+        GenerateAttack(stabAttackData,position-Vector2.up,speed,rightAlign);
+    }
+
+    public void GenerateLowSlash(Vector2 position, float speed,Vector2 rightAlign)
+    {
+        GenerateAttack(slashAttackData,position-Vector2.up,speed,rightAlign);
+    }
+
+    void GenerateAttack(AttackData data, Vector2 pos, float speed, Vector2 rightAlign)
+    {
+        attackBox.Generate(data.attackSize,data.attackDamage,pos,data.attackTime,rightAlign);
     }
 
     

@@ -4,35 +4,41 @@ using UnityEngine;
 
 public class HitBox : MonoBehaviour
 {
-    Bounds bounds;
+    BoxCollider2D col;
     float damage;
     public bool active = false;
     ///This position is relative to the transform
     Vector2 offset;
 
     private void Awake() {
-        bounds = new Bounds();
+        col = GetComponent<BoxCollider2D>();
     }
     private void FixedUpdate() {
-        bounds.center = transform.position + (Vector3) offset;
+        transform.localPosition = offset;
     }
     ///<summary>
     ///The public method for hitbox. Generate a hit box with dimensions, that does damage, at offset, for lifetime.
     ///</summary>
-    public void Generate(Vector2 dimensions, float damage, Vector2 offset, float lifetime)
+    public void Generate(Vector2 dimensions, float damage, Vector2 offset, float lifetime, Vector2 rightAlign)
     {
         SetDimensions(dimensions);
         SetDamage(damage);
+        SetDirection(rightAlign);
         Spawn(lifetime,offset);
     }
     
     void SetDimensions(Vector2 dimensions)
     {
-        bounds = new Bounds(bounds.center,dimensions);
+        col.size = dimensions;
     }
     void SetDamage(float damage)
     {
         this.damage = damage;
+    }
+
+    void SetDirection(Vector2 right)
+    {
+        transform.right = right;
     }
 
     ///<summary>
@@ -52,10 +58,6 @@ public class HitBox : MonoBehaviour
         }
     }
 
-    private bool CheckOverlap(Bounds other) 
-    {
-        return bounds.Intersects(other);
-    }
 
     IEnumerator Evaporate(float lifetime)
     {
@@ -69,7 +71,7 @@ public class HitBox : MonoBehaviour
         {
             // Draw a semitransparent red cube at the transforms position
             Gizmos.color = new Color(1, 0, 0, 0.5f);
-            Gizmos.DrawCube(bounds.center, bounds.size);
+            Gizmos.DrawCube(transform.position, col.size);
         }
     }
 }

@@ -14,6 +14,7 @@ using UnityEngine.InputSystem;
 ///</summary>
 public class PlayerController : MonoBehaviour
 {
+    public enum AimDirection {North, South, East, West, None};
     public GameObject player;
     PlayerState state;
     PlayerMover mover;
@@ -23,6 +24,8 @@ public class PlayerController : MonoBehaviour
     public PlayerControllerDataSO data;
 
     public Vector2 aim;
+    AimDirection curCardinalAim;
+    AimDirection facedDirection;
 
     ///action variables
     bool justJumped;
@@ -30,6 +33,9 @@ public class PlayerController : MonoBehaviour
 
     private void Awake() 
     {
+        curCardinalAim = AimDirection.East;
+        //faced direction can never be anything but east or west.
+        facedDirection = AimDirection.East;
         state = GetComponent<PlayerState>();
         mover = GetComponent<PlayerMover>();
         fighter = GetComponent<PlayerFightingInterface>();
@@ -59,6 +65,45 @@ public class PlayerController : MonoBehaviour
         inputInterface.onKick += Kick;
         inputInterface.onTaunt += Taunt;
         inputInterface.onAccelerate += Accelerate;
+    }
+
+    AimDirection GetCardinalAimDirection(Vector2 aim)
+    {
+        if(aim.x >= .5f) {return AimDirection.East;}
+        else if(aim.x <= -.5f) {return AimDirection.West;}
+        else if(aim.y >= .5f) {return AimDirection.North;}
+        else if(aim.y <= -.5f) {return AimDirection.South;}
+        else
+        {
+            return AimDirection.None;
+        }
+    }
+
+    Vector2 AimDirectionToOffset(AimDirection aimDir)
+    {
+        switch(aimDir)
+        {
+            case AimDirection.North:
+            {
+                return Vector2.up;
+            }
+            case AimDirection.South:
+            {
+                return Vector2.down;
+            }
+            case AimDirection.East:
+            {
+                return Vector2.right;
+            }
+            case AimDirection.West:
+            {
+                return Vector2.left;
+            }
+            default:
+            {
+                return AimDirectionToOffset(facedDirection);
+            }
+        }
     }
 
     void HandleMoveAimVector(Vector2 stick)
@@ -112,6 +157,16 @@ public class PlayerController : MonoBehaviour
     {
         //no state checks required, the aim should be an always tracked thing.
         aim = stick;
+        AimDirection newAim = GetCardinalAimDirection(aim);
+        if(newAim != AimDirection.None)
+        {
+            curCardinalAim = newAim;
+        }
+        if(newAim == AimDirection.East || newAim == AimDirection.West)
+        {
+            facedDirection = newAim;
+        }
+        
     }
 
     void HandleSlashActions(InputAction.CallbackContext context)
@@ -281,11 +336,14 @@ public class PlayerController : MonoBehaviour
     {
         //should already have validated state.
         Debug.Log("Slash");
-        fighter.GenerateSlash(aim,0f);
+        Vector2 offset = AimDirectionToOffset(curCardinalAim);
+        fighter.GenerateSlash(offset,0f,offset);
     }
     void Stab()
     {
         Debug.Log("Stab");
+        Vector2 offset = AimDirectionToOffset(curCardinalAim);
+        fighter.GenerateStab(offset,0f,offset);
     }
     void StabThrow()
     {
@@ -308,10 +366,14 @@ public class PlayerController : MonoBehaviour
     void LowStab()
     {
         Debug.Log("LowStab");
+        Vector2 offset = AimDirectionToOffset(facedDirection);
+        fighter.GenerateLowStab(offset,0f,offset);
     }
     void LowSlash()
     {
         Debug.Log("LowSlash");
+        Vector2 offset = AimDirectionToOffset(facedDirection);
+        fighter.GenerateLowSlash(offset,0f,offset);
     }
     /////////////////////////////////////////////////////////////////////////
     /////////////Simple one off actions, no intermediary handler/////////////
