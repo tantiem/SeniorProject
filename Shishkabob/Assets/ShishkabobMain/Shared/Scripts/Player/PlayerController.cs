@@ -14,6 +14,9 @@ using UnityEngine.InputSystem;
 ///</summary>
 public class PlayerController : MonoBehaviour
 {
+    public delegate void DirectionChange(AimDirection dir);
+    public event DirectionChange onFacedDirChange;
+
     public enum AimDirection {North, South, East, West, None};
     public GameObject player;
     PlayerState state;
@@ -158,13 +161,22 @@ public class PlayerController : MonoBehaviour
         //no state checks required, the aim should be an always tracked thing.
         aim = stick;
         AimDirection newAim = GetCardinalAimDirection(aim);
+        //cardinal aim for simplified attacks
         if(newAim != AimDirection.None)
         {
+            //if actively aiming, set aim
             curCardinalAim = newAim;
         }
         if(newAim == AimDirection.East || newAim == AimDirection.West)
         {
+            //if we ever aim left or right, set our player faced direciton
             facedDirection = newAim;
+            onFacedDirChange?.Invoke(facedDirection);
+        }
+        if(newAim == AimDirection.None)
+        {
+            //if no aiming is going on, then our current aim for attacks will be wherever we are facing
+            curCardinalAim = facedDirection;
         }
         
     }
@@ -381,8 +393,16 @@ public class PlayerController : MonoBehaviour
     void BlockStart()
     {
         Debug.Log("BlockStart");
+        state.SetState(PlayerState.State.Blocking);
+        StartCoroutine(BlockStop());
         //Valid states to block from:
         //Active- grounded or not
+    }
+    IEnumerator BlockStop()
+    {
+        yield return new WaitForSeconds(1f);
+        //change later to stun for another second
+        state.SetState(PlayerState.State.Active);
     }
 
     void Taunt()

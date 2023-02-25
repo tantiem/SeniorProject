@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerMover : MonoBehaviour
 {
-    Rigidbody2D rb;
+    CustomPlayerRigidbody rb;
     PlayerState state;
     float horizontalInputVelocity;
     float horizontalInputLimit;
@@ -14,6 +14,8 @@ public class PlayerMover : MonoBehaviour
 
     private void Awake() {
         state = GetComponent<PlayerState>();
+        rb.OnGrounded += () => {state.SetGrounded(true);};
+        rb.OnUnGrounded += () => {state.SetGrounded(false);};
     }
 
     private void Update() 
@@ -28,12 +30,13 @@ public class PlayerMover : MonoBehaviour
             //if we are in the air, we can add our velocity from air walking in a sensible way
             AddToCurrentVelocityXClamped(additiveHorizontalAirWalkVelocity,additiveHorizontalLimit);
         }
+        Debug.Log(state.GetState());
         
     }
 
     public void Inititalize(GameObject player)
     {
-        rb = player.GetComponent<Rigidbody2D>();
+        rb = player.GetComponent<CustomPlayerRigidbody>();
     }
     
     public void SetHorizontalInputVelocity(float v)

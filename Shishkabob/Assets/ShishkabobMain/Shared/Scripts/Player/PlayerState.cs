@@ -21,6 +21,7 @@ public class PlayerState : MonoBehaviour
     public void SetGrounded(bool b)
     {
         if(b != grounded){
+            grounded = b;
             onGroundedChanged?.Invoke(grounded);
         }
         grounded = b;
@@ -35,6 +36,7 @@ public class PlayerState : MonoBehaviour
     public void SetState(State s)
     {
         if(s != state){
+            state = s;
             onStateChanged?.Invoke(state);
         }
         state = s;
@@ -51,14 +53,5 @@ public class PlayerState : MonoBehaviour
     //
 
     ///BASIC REGROUNDING
-    private void OnCollisionEnter2D(Collision2D other) 
-    {
-        //since state handles grounded, makes sense it should enable it for ya when it makes sense to.
-        SetGrounded(true);
-    }
-
-    private void OnCollisionExit2D(Collision2D other) 
-    {
-        SetGrounded(false);
-    }
+    
 }
