@@ -5,15 +5,16 @@ TagManager:
   serializedVersion: 2
   tags:
   - SwordHitBox
+  - Environment
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
-  - 
-  - 
+  - Hitbox
+  - Environment
   - 
   - 
   - 

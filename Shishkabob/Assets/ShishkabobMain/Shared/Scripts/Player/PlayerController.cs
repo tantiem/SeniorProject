@@ -33,9 +33,12 @@ public class PlayerController : MonoBehaviour
     ///action variables
     bool justJumped;
 
+    float health;
+
 
     private void Awake() 
     {
+        health = 100;
         curCardinalAim = AimDirection.East;
         //faced direction can never be anything but east or west.
         facedDirection = AimDirection.East;
@@ -349,13 +352,13 @@ public class PlayerController : MonoBehaviour
         //should already have validated state.
         Debug.Log("Slash");
         Vector2 offset = AimDirectionToOffset(curCardinalAim);
-        fighter.GenerateSlash(offset,0f,offset);
+        fighter.GenerateSlash(offset,mover.GetVelocity(),offset);
     }
     void Stab()
     {
         Debug.Log("Stab");
         Vector2 offset = AimDirectionToOffset(curCardinalAim);
-        fighter.GenerateStab(offset,0f,offset);
+        fighter.GenerateStab(offset,mover.GetVelocity(),offset);
     }
     void StabThrow()
     {
@@ -379,13 +382,13 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log("LowStab");
         Vector2 offset = AimDirectionToOffset(facedDirection);
-        fighter.GenerateLowStab(offset,0f,offset);
+        fighter.GenerateLowStab(offset,mover.GetVelocity(),offset);
     }
     void LowSlash()
     {
         Debug.Log("LowSlash");
         Vector2 offset = AimDirectionToOffset(facedDirection);
-        fighter.GenerateLowSlash(offset,0f,offset);
+        fighter.GenerateLowSlash(offset,mover.GetVelocity(),offset);
     }
     /////////////////////////////////////////////////////////////////////////
     /////////////Simple one off actions, no intermediary handler/////////////
@@ -433,6 +436,21 @@ public class PlayerController : MonoBehaviour
         {
             mover.AddVelocity(aim * data.accelerateActionMultiplier);
         }
+    }
+    
+    //Damaging and attacks and stuff
+
+    public void SetKnockback(Vector2 knockback)
+    {
+        mover.SetInstantVelocity(knockback);
+    }
+    public void Damage(float amt)
+    {
+        health -= amt;
+    }
+    public Vector2 GetVelocity()
+    {
+        return mover.GetVelocity();
     }
 
 

@@ -14,8 +14,7 @@ public class PlayerMover : MonoBehaviour
 
     private void Awake() {
         state = GetComponent<PlayerState>();
-        rb.OnGrounded += () => {state.SetGrounded(true);};
-        rb.OnUnGrounded += () => {state.SetGrounded(false);};
+        
     }
 
     private void Update() 
@@ -30,13 +29,14 @@ public class PlayerMover : MonoBehaviour
             //if we are in the air, we can add our velocity from air walking in a sensible way
             AddToCurrentVelocityXClamped(additiveHorizontalAirWalkVelocity,additiveHorizontalLimit);
         }
-        Debug.Log(state.GetState());
         
     }
 
     public void Inititalize(GameObject player)
     {
         rb = player.GetComponent<CustomPlayerRigidbody>();
+        rb.OnGrounded += () => {state.SetGrounded(true);};
+        rb.OnUnGrounded += () => {state.SetGrounded(false);};
     }
     
     public void SetHorizontalInputVelocity(float v)
@@ -75,6 +75,10 @@ public class PlayerMover : MonoBehaviour
         {
             SlowDownVelocityY(slowDownMult);
         }
+    }
+    public Vector2 GetVelocity()
+    {
+        return rb.velocity;
     }
     ////private
     void SetVelocityX(float v)

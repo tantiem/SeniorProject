@@ -4,22 +4,27 @@ using UnityEngine;
 
 public class HitBox : MonoBehaviour
 {
+    public ContactFilter2D filter;
     BoxCollider2D col;
     float damage;
     public bool active = false;
+    Collider2D[] hits;
     ///This position is relative to the transform
     Vector2 offset;
+    Vector2 inheritedVelocity;
 
     private void Awake() {
         col = GetComponent<BoxCollider2D>();
+        hits = new Collider2D[4];
     }
     private void FixedUpdate() {
         transform.localPosition = offset;
+        CheckHit();
     }
     ///<summary>
     ///The public method for hitbox. Generate a hit box with dimensions, that does damage, at offset, for lifetime.
     ///</summary>
-    public void Generate(Vector2 dimensions, float damage, Vector2 offset, float lifetime, Vector2 rightAlign)
+    public void Generate(Vector2 dimensions, float damage, Vector2 offset, float lifetime, Vector2 rightAlign,Vector2 speed)
     {
         SetDimensions(dimensions);
         SetDamage(damage);
@@ -65,13 +70,55 @@ public class HitBox : MonoBehaviour
         active = false;
     }
 
-    void OnDrawGizmos()
+    
+
+    void CheckHit()
     {
         if(active)
         {
-            // Draw a semitransparent red cube at the transforms position
-            Gizmos.color = new Color(1, 0, 0, 0.5f);
-            Gizmos.DrawCube(transform.position, col.size);
+            if(col.OverlapCollider(filter,hits) > 0)
+            {
+                Debug.Log("Hits");
+                foreach(Collider2D recipient in hits)
+                {
+                    if(recipient.tag == "Environment")
+                    {
+                        ResolveHitEnvironment();
+                    }
+                    else if(recipient.tag == "Player")
+                    {
+                        ResolveHitPlayer(recipient.gameObject);
+                    }
+                    else if(recipient.tag == "SwordHitBox")
+                    {
+                        ResolveHitSword(recipient.gameObject);
+                    }
+                }
+            }
         }
+    }
+
+    void ResolveHitEnvironment()
+    {
+
+    }
+    void ResolveHitPlayer(GameObject otherPlayer)
+    {
+        PlayerController otherController;
+        bool valid = otherPlayer.TryGetComponent<PlayerController>(out otherController);
+
+        if(valid)
+        {
+            otherController.Damage(damage);
+            otherController.SetKnockback(inheritedVelocity);
+        }
+        else
+        {
+            Debug.LogError($"{this.gameObject} encountered an error trying to get PlayerController from {otherPlayer}",this);
+        }
+    }
+    void ResolveHitSword(GameObject otherSword)
+    {
+
     }
 }

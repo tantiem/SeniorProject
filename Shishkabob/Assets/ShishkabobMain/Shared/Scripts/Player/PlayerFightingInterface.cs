@@ -8,29 +8,29 @@ public class PlayerFightingInterface : MonoBehaviour
     public AttackData slashAttackData;
     public AttackData stabAttackData;
 
-    public void GenerateSlash(Vector2 position,float speed,Vector2 rightAlign)
+    public void GenerateSlash(Vector2 position,Vector2 rightAlign,Vector2 speed)
     {
-        GenerateAttack(slashAttackData,position,speed,rightAlign);
+        GenerateAttack(slashAttackData,position,rightAlign,speed);
     }
 
-    public void GenerateStab(Vector2 position, float speed,Vector2 rightAlign)
+    public void GenerateStab(Vector2 position, Vector2 rightAlign,Vector2 speed)
     {
-        GenerateAttack(stabAttackData,position,speed,rightAlign);
+        GenerateAttack(stabAttackData,position,rightAlign,speed);
     }
 
-    public void GenerateLowStab(Vector2 position, float speed,Vector2 rightAlign)
+    public void GenerateLowStab(Vector2 position, Vector2 rightAlign,Vector2 speed)
     {
-        GenerateAttack(stabAttackData,position-Vector2.up,speed,rightAlign);
+        GenerateAttack(stabAttackData,position-Vector2.up,rightAlign,speed);
     }
 
-    public void GenerateLowSlash(Vector2 position, float speed,Vector2 rightAlign)
+    public void GenerateLowSlash(Vector2 position, Vector2 rightAlign,Vector2 speed)
     {
-        GenerateAttack(slashAttackData,position-Vector2.up,speed,rightAlign);
+        GenerateAttack(slashAttackData,position-Vector2.up,rightAlign,speed);
     }
 
-    void GenerateAttack(AttackData data, Vector2 pos, float speed, Vector2 rightAlign)
+    void GenerateAttack(AttackData data, Vector2 pos, Vector2 rightAlign, Vector2 speed)
     {
-        attackBox.Generate(data.attackSize,data.attackDamage,pos,data.attackTime,rightAlign);
+        attackBox.Generate(data.attackSize,data.attackDamage,pos,data.attackTime,rightAlign,speed);
     }
 
     
