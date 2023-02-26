@@ -14,6 +14,7 @@ public class CustomPlayerRigidbody : CustomRB
     public event Signal OnUnGrounded;
     public event Signal OnCollideWall;
     public float walkAngleLimit = 0.6f;
+    public ContactFilter2D filter;
 
     bool goingToCollideNextFrame;
     private void Awake() 
@@ -49,8 +50,11 @@ public class CustomPlayerRigidbody : CustomRB
         distanceToCheck = (this.velocity * dt).magnitude;
         direction = this.velocity.normalized;
 
-        hits = col.Cast(direction,futureColResults,distanceToCheck);
+        //weed out not environment colliders
+        hits = col.Cast(direction,filter,futureColResults,distanceToCheck);
         RaycastHit2D firstHit = futureColResults[0];
+        
+        //if there were hits and at least one was the environment
         if(hits > 0)
         {
             return true;
@@ -121,7 +125,7 @@ public class CustomPlayerRigidbody : CustomRB
     }
     void CheckGrounded()
     {
-        if(col.Cast(Vector2.down,futureColResults,0.1f) > 0)
+        if(col.Cast(Vector2.down,filter,futureColResults,0.1f) > 0)
         {
             if(CheckCollideWalkable(futureColResults[0]))
             {

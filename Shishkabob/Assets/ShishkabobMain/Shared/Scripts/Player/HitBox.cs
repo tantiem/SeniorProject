@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class HitBox : MonoBehaviour
 {
+    [SerializeField]
+    GameObject owner;
     public ContactFilter2D filter;
     BoxCollider2D col;
     float damage;
@@ -12,10 +14,13 @@ public class HitBox : MonoBehaviour
     ///This position is relative to the transform
     Vector2 offset;
     Vector2 inheritedVelocity;
+    
 
     private void Awake() {
+        owner = transform.parent.gameObject;
         col = GetComponent<BoxCollider2D>();
         hits = new Collider2D[4];
+        filter.NoFilter();
     }
     private void FixedUpdate() {
         transform.localPosition = offset;
@@ -26,6 +31,7 @@ public class HitBox : MonoBehaviour
     ///</summary>
     public void Generate(Vector2 dimensions, float damage, Vector2 offset, float lifetime, Vector2 rightAlign,Vector2 speed)
     {
+        inheritedVelocity = speed;
         SetDimensions(dimensions);
         SetDamage(damage);
         SetDirection(rightAlign);
@@ -76,23 +82,35 @@ public class HitBox : MonoBehaviour
     {
         if(active)
         {
+            
             if(col.OverlapCollider(filter,hits) > 0)
             {
-                Debug.Log("Hits");
+                
                 foreach(Collider2D recipient in hits)
                 {
-                    if(recipient.tag == "Environment")
+                    
+                    //if the collider array isn't full there will be a null
+                    //also, if the recipient is yourself, dont do anything
+                    if(recipient != null && recipient.gameObject != owner )
                     {
-                        ResolveHitEnvironment();
+                        
+                        if(recipient.tag == "Environment")
+                        {
+                            ResolveHitEnvironment();
+                        }
+                        else if(recipient.tag == "Player")
+                        {
+                            ResolveHitPlayer(recipient.gameObject);
+                        }
+                        else if(recipient.tag == "SwordHitBox")
+                        {
+                            if(recipient.GetComponent<HitBox>().active)
+                            {
+                                ResolveHitSword(recipient.gameObject);
+                            }
+                        }
                     }
-                    else if(recipient.tag == "Player")
-                    {
-                        ResolveHitPlayer(recipient.gameObject);
-                    }
-                    else if(recipient.tag == "SwordHitBox")
-                    {
-                        ResolveHitSword(recipient.gameObject);
-                    }
+                    
                 }
             }
         }
@@ -104,12 +122,14 @@ public class HitBox : MonoBehaviour
     }
     void ResolveHitPlayer(GameObject otherPlayer)
     {
+        active = false;
         PlayerController otherController;
         bool valid = otherPlayer.TryGetComponent<PlayerController>(out otherController);
 
         if(valid)
         {
             otherController.Damage(damage);
+            Debug.Log($"Inherited velocity: {inheritedVelocity}");
             otherController.SetKnockback(inheritedVelocity);
         }
         else
@@ -121,4 +141,5 @@ public class HitBox : MonoBehaviour
     {
 
     }
+
 }

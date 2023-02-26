@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
 
     ///action variables
     bool justJumped;
-
+[SerializeField]
     float health;
 
 
@@ -352,13 +352,13 @@ public class PlayerController : MonoBehaviour
         //should already have validated state.
         Debug.Log("Slash");
         Vector2 offset = AimDirectionToOffset(curCardinalAim);
-        fighter.GenerateSlash(offset,mover.GetVelocity(),offset);
+        fighter.GenerateSlash(offset,mover.GetVelocity(),offset + mover.GetVelocity());
     }
     void Stab()
     {
         Debug.Log("Stab");
         Vector2 offset = AimDirectionToOffset(curCardinalAim);
-        fighter.GenerateStab(offset,mover.GetVelocity(),offset);
+        fighter.GenerateStab(offset,mover.GetVelocity(),offset + mover.GetVelocity());
     }
     void StabThrow()
     {
@@ -382,13 +382,13 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log("LowStab");
         Vector2 offset = AimDirectionToOffset(facedDirection);
-        fighter.GenerateLowStab(offset,mover.GetVelocity(),offset);
+        fighter.GenerateLowStab(offset,mover.GetVelocity(),offset + mover.GetVelocity());
     }
     void LowSlash()
     {
         Debug.Log("LowSlash");
         Vector2 offset = AimDirectionToOffset(facedDirection);
-        fighter.GenerateLowSlash(offset,mover.GetVelocity(),offset);
+        fighter.GenerateLowSlash(offset,mover.GetVelocity(),offset + mover.GetVelocity());
     }
     /////////////////////////////////////////////////////////////////////////
     /////////////Simple one off actions, no intermediary handler/////////////
