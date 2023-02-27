@@ -32,7 +32,9 @@ public class PlayerController : MonoBehaviour
 
     ///action variables
     bool justJumped;
-[SerializeField]
+    bool wantToDuck;
+    //stats
+    [SerializeField]
     float health;
 
 
@@ -71,6 +73,32 @@ public class PlayerController : MonoBehaviour
         inputInterface.onKick += Kick;
         inputInterface.onTaunt += Taunt;
         inputInterface.onAccelerate += Accelerate;
+    }
+
+    public void StateChangeModifications(PlayerState.State newState)
+    {
+        if(newState == PlayerState.State.Ducking)
+        {
+            mover.SetFrictionScaleToPercentDefault(0.96f);
+        }
+        if(newState != PlayerState.State.Ducking)
+        {
+            mover.ResetFrictionScale();
+        }
+    }
+    public void GroundedChangeModifications(bool grounded)
+    {
+        if(grounded)
+        {
+            if(wantToDuck)
+            {
+                if(state.GetState() == PlayerState.State.Active)
+                {
+                    InitiateDuck();
+                    wantToDuck = false;
+                }
+            }
+        }
     }
 
     AimDirection GetCardinalAimDirection(Vector2 aim)
@@ -136,6 +164,10 @@ public class PlayerController : MonoBehaviour
             else
             {
                 Walk(stick.x);
+                if(stick.y < data.crouchThreshold)
+                {
+                    wantToDuck = true;
+                }
             }
         }
         //if player is in a ducking state, check if we should rise them up from their ducking state
@@ -147,6 +179,13 @@ public class PlayerController : MonoBehaviour
                 if(stick.y > data.crouchThreshold)
                 {
                     InitiateGetUp();
+                }
+            }
+            else
+            {
+                if(stick.y > data.crouchThreshold)
+                {
+                    wantToDuck = false;
                 }
             }
         }
@@ -452,6 +491,9 @@ public class PlayerController : MonoBehaviour
     {
         return mover.GetVelocity();
     }
-
+    public void OnHitConnect()
+    {
+        mover.SetInstantVelocity(mover.GetVelocity()/4);
+    }
 
 }

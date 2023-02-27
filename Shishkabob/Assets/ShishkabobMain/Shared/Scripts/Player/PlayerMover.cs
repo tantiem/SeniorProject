@@ -80,6 +80,14 @@ public class PlayerMover : MonoBehaviour
     {
         return rb.velocity;
     }
+    public void SetFrictionScaleToPercentDefault(float amt)
+    {
+        rb.SetFrictionScaleToPercentDefault(amt);
+    }
+    public void ResetFrictionScale()
+    {
+        rb.ResetFrictionScale();
+    }
     ////private
     void SetVelocityX(float v)
     {

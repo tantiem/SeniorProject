@@ -16,9 +16,12 @@ public class CustomPlayerRigidbody : CustomRB
     public float walkAngleLimit = 0.6f;
     public ContactFilter2D filter;
 
+    float defaultFriction = 1.05f;
+
     bool goingToCollideNextFrame;
     private void Awake() 
     {
+        defaultFriction = frictionScale;
         this.Initialize();
     }
 
@@ -41,6 +44,15 @@ public class CustomPlayerRigidbody : CustomRB
             MoveNoCollide(dt);
         }
         CheckGrounded();
+    }
+
+    public void SetFrictionScaleToPercentDefault(float amt)
+    {
+        frictionScale = defaultFriction * amt;
+    }
+    public void ResetFrictionScale()
+    {
+        SetFrictionScaleToPercentDefault(1);
     }
 
     bool CheckAboutToCollide(float dt, out float distanceToCheck, out Vector2 direction, out int hits) //Valid, makes sense
@@ -165,6 +177,7 @@ public class CustomPlayerRigidbody : CustomRB
         transform.position += new Vector3(preCollideMovement.x, preCollideMovement.y,0);
         //find remaining magnitude and move than much on the new surface, as well as setting our new velocity
         this.velocity = ResolveCollisionVelocity(hit);
+        this.velocity/= frictionScale;
         float remainingMagnitude = movement.magnitude - preCollideMovement.magnitude;
         Vector2 postCollideMovement = remainingMagnitude * this.velocity.normalized;
         transform.position += new Vector3(postCollideMovement.x,postCollideMovement.y,0);

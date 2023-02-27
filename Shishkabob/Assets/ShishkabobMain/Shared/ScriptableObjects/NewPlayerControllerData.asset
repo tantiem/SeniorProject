@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: NewPlayerControllerData
   m_EditorClassIdentifier: 
   crouchThreshold: -0.75
-  walkSpeed: 6.27
+  walkSpeed: 10.17
   walkAccelMult: 7.3
-  airWalkSpeed: 2
+  airWalkSpeed: 3.08
   airWalkSpeedMult: 6.95
-  jumpSpeed: 10.41
-  jumpEarlyStopSlowdownMult: 0.7
+  jumpSpeed: 12.04
+  jumpEarlyStopSlowdownMult: 0.5
   blockLength: 1
-  accelerateActionMultiplier: 6.45
+  accelerateActionMultiplier: 12.33

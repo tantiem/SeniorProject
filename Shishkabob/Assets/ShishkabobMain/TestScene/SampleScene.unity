@@ -398,7 +398,7 @@ MonoBehaviour:
   gravity: 2
   drag: 0
   mass: 10
-  frictionScale: 0
+  frictionScale: 1.05
   velocity: {x: 0, y: 0}
   walkAngleLimit: 0.6
   filter:
@@ -766,6 +766,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 373056636}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: StateChangeModifications
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onGroundedChanged:
     m_PersistentCalls:
       m_Calls:
@@ -784,6 +796,18 @@ MonoBehaviour:
       - m_Target: {fileID: 501450805}
         m_TargetAssemblyTypeName: OtherAnimController, Assembly-CSharp
         m_MethodName: OnGroundedChanged
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 373056636}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: GroundedChangeModifications
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -850,7 +874,7 @@ MonoBehaviour:
     attackDamage: 25
   stabAttackData:
     attackSize: {x: 4, y: 1}
-    attackTime: 0.5
+    attackTime: 0.15
     attackDamage: 50
 --- !u!1 &378125458
 GameObject:
@@ -1460,6 +1484,21 @@ MonoBehaviour:
     minNormalAngle: 0
     maxNormalAngle: 0
   active: 0
+  OnHitConnect:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 373056636}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnHitConnect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!61 &690109376
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1814,7 +1853,7 @@ MonoBehaviour:
   gravity: 2
   drag: 0
   mass: 10
-  frictionScale: 0
+  frictionScale: 1.05
   velocity: {x: 0, y: 0}
   walkAngleLimit: 0.6
   filter:
@@ -2437,6 +2476,9 @@ MonoBehaviour:
     minNormalAngle: 0
     maxNormalAngle: 0
   active: 0
+  OnHitConnect:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!61 &1208029810
 BoxCollider2D:
   m_ObjectHideFlags: 0

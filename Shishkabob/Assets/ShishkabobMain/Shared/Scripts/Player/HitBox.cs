@@ -1,9 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+public struct HitInfo
+{
 
+}
 public class HitBox : MonoBehaviour
 {
+    
     [SerializeField]
     GameObject owner;
     public ContactFilter2D filter;
@@ -14,13 +19,15 @@ public class HitBox : MonoBehaviour
     ///This position is relative to the transform
     Vector2 offset;
     Vector2 inheritedVelocity;
+
+    public UnityEvent OnHitConnect;
     
 
     private void Awake() {
         owner = transform.parent.gameObject;
         col = GetComponent<BoxCollider2D>();
         hits = new Collider2D[4];
-        filter.NoFilter();
+        //filter.NoFilter();
     }
     private void FixedUpdate() {
         transform.localPosition = offset;
@@ -82,7 +89,9 @@ public class HitBox : MonoBehaviour
     {
         if(active)
         {
-            
+            active = false;
+            hits = new Collider2D[4];//clear before checking
+            Physics2D.SyncTransforms();
             if(col.OverlapCollider(filter,hits) > 0)
             {
                 
@@ -93,7 +102,7 @@ public class HitBox : MonoBehaviour
                     //also, if the recipient is yourself, dont do anything
                     if(recipient != null && recipient.gameObject != owner )
                     {
-                        
+                        OnHitConnect?.Invoke();
                         if(recipient.tag == "Environment")
                         {
                             ResolveHitEnvironment();
@@ -106,7 +115,7 @@ public class HitBox : MonoBehaviour
                         {
                             if(recipient.GetComponent<HitBox>().active)
                             {
-                                ResolveHitSword(recipient.gameObject);
+                                ResolveHitSword(recipient.gameObject,recipient);
                             }
                         }
                     }
@@ -122,7 +131,7 @@ public class HitBox : MonoBehaviour
     }
     void ResolveHitPlayer(GameObject otherPlayer)
     {
-        active = false;
+        
         PlayerController otherController;
         bool valid = otherPlayer.TryGetComponent<PlayerController>(out otherController);
 
@@ -137,9 +146,17 @@ public class HitBox : MonoBehaviour
             Debug.LogError($"{this.gameObject} encountered an error trying to get PlayerController from {otherPlayer}",this);
         }
     }
-    void ResolveHitSword(GameObject otherSword)
+    void ResolveHitSword(GameObject otherSword, Collider2D otherCollider)
     {
-
+        if(otherCollider.bounds.size.y < col.bounds.size.y)
+        {
+            //this means other collider is a stab compared to this slash
+        }
+        else if(otherCollider.bounds.size == col.bounds.size)
+        {
+            //this means both are equal
+            //Parry();
+        }
     }
 
 }
