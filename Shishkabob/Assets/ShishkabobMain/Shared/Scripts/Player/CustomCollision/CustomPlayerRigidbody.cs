@@ -175,9 +175,12 @@ public class CustomPlayerRigidbody : CustomRB
         //move distance to collision
         Vector2 preCollideMovement = preCollideDir * hit.fraction * 0.8f;
         transform.position += new Vector3(preCollideMovement.x, preCollideMovement.y,0);
+
         //find remaining magnitude and move than much on the new surface, as well as setting our new velocity
         this.velocity = ResolveCollisionVelocity(hit);
-        this.velocity/= frictionScale;
+        Vector2 frictionForce = this.velocity.normalized * frictionScale;
+
+        this.velocity -= frictionForce;
         float remainingMagnitude = movement.magnitude - preCollideMovement.magnitude;
         Vector2 postCollideMovement = remainingMagnitude * this.velocity.normalized;
         transform.position += new Vector3(postCollideMovement.x,postCollideMovement.y,0);

@@ -88,14 +88,19 @@ public class PlayerMover : MonoBehaviour
     {
         rb.ResetFrictionScale();
     }
-    ////private
+    ///////////////////////////
+    ////private//////////////
+    //////////////////////////
     void SetVelocityX(float v)
     {
         rb.velocity = new Vector2(v, rb.velocity.y);
     }
     void SetVelocityY(float v)
     {
+        rb.transform.position += Vector3.up * .01f; //bo busted implement
+        Physics2D.SyncTransforms();
         rb.velocity = new Vector2(rb.velocity.x, v);
+        
     }
     void SetVelocity(Vector2 dir)
     {

@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour
     {
         if(newState == PlayerState.State.Ducking)
         {
-            mover.SetFrictionScaleToPercentDefault(0.96f);
+            mover.SetFrictionScaleToPercentDefault(0.5f);
         }
         if(newState != PlayerState.State.Ducking)
         {

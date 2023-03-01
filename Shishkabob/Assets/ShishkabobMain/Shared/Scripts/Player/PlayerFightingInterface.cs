@@ -30,7 +30,7 @@ public class PlayerFightingInterface : MonoBehaviour
 
     void GenerateAttack(AttackData data, Vector2 pos, Vector2 rightAlign, Vector2 speed)
     {
-        attackBox.Generate(data.attackSize,data.attackDamage,pos,data.attackTime,rightAlign,speed);
+        attackBox.Generate(data,pos,rightAlign,speed);
     }
 
     
@@ -42,10 +42,15 @@ public class AttackData
     public float attackTime;
     public float attackDamage;
 
+    public float preTime;
+    public float postTime;
+
     public AttackData()
     {
         attackDamage = 1f;
         attackTime = 1f;
         attackSize = Vector2.one;
+        preTime = .1f;
+        postTime = .3f;
     }
 }
