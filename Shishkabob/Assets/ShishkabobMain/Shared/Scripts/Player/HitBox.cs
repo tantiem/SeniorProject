@@ -100,6 +100,7 @@ public class HitBox : MonoBehaviour
 
     void SetDirection(Vector2 right)
     {
+        Physics2D.SyncTransforms();
         transform.right = right;
     }
 

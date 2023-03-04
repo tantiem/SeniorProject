@@ -391,13 +391,13 @@ public class PlayerController : MonoBehaviour
         //should already have validated state.
         Debug.Log("Slash");
         Vector2 offset = AimDirectionToOffset(curCardinalAim);
-        fighter.GenerateSlash(offset,mover.GetVelocity(),offset + mover.GetVelocity());
+        fighter.GenerateSlash(offset,aim,offset + mover.GetVelocity());
     }
     void Stab()
     {
         Debug.Log("Stab");
         Vector2 offset = AimDirectionToOffset(curCardinalAim);
-        fighter.GenerateStab(offset,mover.GetVelocity(),offset + mover.GetVelocity());
+        fighter.GenerateStab(offset,aim,offset + mover.GetVelocity());
     }
     void StabThrow()
     {
@@ -421,13 +421,13 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log("LowStab");
         Vector2 offset = AimDirectionToOffset(facedDirection);
-        fighter.GenerateLowStab(offset,mover.GetVelocity(),offset + mover.GetVelocity());
+        fighter.GenerateLowStab(offset,offset,offset + mover.GetVelocity());
     }
     void LowSlash()
     {
         Debug.Log("LowSlash");
         Vector2 offset = AimDirectionToOffset(facedDirection);
-        fighter.GenerateLowSlash(offset,mover.GetVelocity(),offset + mover.GetVelocity());
+        fighter.GenerateLowSlash(offset,offset,offset + mover.GetVelocity());
     }
     /////////////////////////////////////////////////////////////////////////
     /////////////Simple one off actions, no intermediary handler/////////////
