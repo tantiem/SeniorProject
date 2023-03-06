@@ -937,8 +937,8 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 504d8286-9889-4d30-9d39-b209f6140af3
     m_ActionName: PlayerActionMap/Accelerate[/DualShock4GamepadHID/rightShoulder,/Keyboard/leftShift]
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: Player
+  m_NeverAutoSwitchControlSchemes: 1
+  m_DefaultControlScheme: KeyboardPlayer
   m_DefaultActionMap: PlayerActionMap
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
