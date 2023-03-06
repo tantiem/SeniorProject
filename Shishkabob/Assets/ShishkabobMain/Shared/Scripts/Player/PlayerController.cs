@@ -391,13 +391,13 @@ public class PlayerController : MonoBehaviour
         //should already have validated state.
         Debug.Log("Slash");
         Vector2 offset = AimDirectionToOffset(curCardinalAim);
-        fighter.GenerateSlash(offset,aim,offset + mover.GetVelocity());
+        fighter.GenerateSlash(offset,offset,offset + mover.GetVelocity());
     }
     void Stab()
     {
         Debug.Log("Stab");
         Vector2 offset = AimDirectionToOffset(curCardinalAim);
-        fighter.GenerateStab(offset,aim,offset + mover.GetVelocity());
+        fighter.GenerateStab(offset,offset,offset + mover.GetVelocity());
     }
     void StabThrow()
     {

@@ -32,19 +32,35 @@ public class PlayerFightingInterface : MonoBehaviour
 
     void GenerateAttack(AttackData data, Vector2 pos, Vector2 rightAlign, Vector2 speed)
     {
-        Vector2 alignedPos = Vector2.one;
-        if(rightAlign.x != 0)
-        {
-            //align on x
-            alignedPos = new Vector2(rightAlign.x,alignedPos.y);
-        }
-        if(rightAlign.y != 0)
-        {
-            alignedPos = new Vector2(alignedPos.x, rightAlign.y);
-        }
-        alignedPos *= data.pos; // align data input pos to the aim direction
+        Vector2 alignedPos = AlignAttackDataPosToAim(rightAlign,data);
+        
         attackBox.Generate(data,pos + alignedPos,rightAlign,speed);
         
+    }
+    /// <summary>
+    /// Attack data position is an offset based on the right. Use this to convert it to whatever aimed direction.
+    /// </summary>
+    /// <param name="rightAlign"></param>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    Vector2 AlignAttackDataPosToAim(Vector2 rightAlign, AttackData data)
+    {
+        if(rightAlign.x > 0)
+        {
+            return new Vector2(data.pos.x, data.pos.y);
+        }
+        else if(rightAlign.x < 0)
+        {
+            return new Vector2(-data.pos.x, data.pos.y);
+        }
+        else if(rightAlign.y > 0)
+        {
+            return new Vector2(0,data.pos.x);
+        }
+        else
+        {
+            return new Vector2(0, -data.pos.x);
+        }
     }
 
     
