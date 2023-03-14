@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(PlayerState))]
 [RequireComponent(typeof(PlayerMover))]
@@ -33,9 +34,12 @@ public class PlayerController : MonoBehaviour
     ///action variables
     bool justJumped;
     bool wantToDuck;
+    Coroutine blockFail;
     //stats
     [SerializeField]
     float health;
+
+    public UnityEvent<float> onBroadcastInputX;
 
 
     private void Awake() 
@@ -142,6 +146,7 @@ public class PlayerController : MonoBehaviour
 
     void HandleMoveAimVector(Vector2 stick)
     {
+        onBroadcastInputX?.Invoke(stick.x);//for animators
         //Regardless of state, call SetAim
         SetAim(stick);
         //If you are in the Active state, check if you should duck or walk.
@@ -436,14 +441,22 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log("BlockStart");
         state.SetState(PlayerState.State.Blocking);
-        StartCoroutine(BlockStop());
+        blockFail = StartCoroutine(BlockStop());
         //Valid states to block from:
         //Active- grounded or not
     }
-    IEnumerator BlockStop()
+    public void BlockSuccess()
     {
+        //stop the blockstop routine that would case the block fail to occur.
+        StopCoroutine(blockFail);
+        state.SetState(PlayerState.State.Active);
+    }
+    IEnumerator BlockStop()
+    {        
+        //wait a second to see if block properly, then stun for a second, then return.
         yield return new WaitForSeconds(1f);
-        //change later to stun for another second
+        state.SetState(PlayerState.State.Stunned);
+        yield return new WaitForSeconds(1f);
         state.SetState(PlayerState.State.Active);
     }
 
@@ -495,5 +508,15 @@ public class PlayerController : MonoBehaviour
     {
         mover.SetInstantVelocity(mover.GetVelocity()/4);
     }
+    public bool IsBlocking()
+    {
+        return state.GetState() == PlayerState.State.Blocking;
+    }
+    public void Stun(float seconds)
+    {
+        
+    }
+
+    
 
 }

@@ -13,6 +13,7 @@ public class HitBox : MonoBehaviour
     
     [SerializeField]
     GameObject owner;
+    PlayerController ownerPlayerController;
     public ContactFilter2D filter;
     BoxCollider2D col;
     float damage;
@@ -59,6 +60,7 @@ public class HitBox : MonoBehaviour
         owner = transform.parent.gameObject;
         col = GetComponent<BoxCollider2D>();
         hits = new Collider2D[4];
+        ownerPlayerController = owner.GetComponent<PlayerController>();
         //filter.NoFilter();
     }
     private void FixedUpdate() {
@@ -147,11 +149,16 @@ public class HitBox : MonoBehaviour
             yield return new WaitForFixedUpdate();
             curTime+=Time.fixedDeltaTime;
         }
+        
+        StartCoroutine(CancelAttack(postTime));
+
+    }
+
+    IEnumerator CancelAttack(float postTime)
+    {
         active = false;
         yield return new WaitForSeconds(postTime);
         ready = true;
-
-
     }
 
     bool CheckHit()
@@ -196,7 +203,7 @@ public class HitBox : MonoBehaviour
 
     void ResolveHitEnvironment()
     {
-
+        //backlog for now
     }
     void ResolveHitPlayer(GameObject otherPlayer)
     {
@@ -206,9 +213,18 @@ public class HitBox : MonoBehaviour
 
         if(valid)
         {
-            otherController.Damage(damage);
-            Debug.Log($"Inherited velocity: {inheritedVelocity}");
-            otherController.SetKnockback(inheritedVelocity);
+            if(otherController.IsBlocking())
+            {
+                ownerPlayerController.Stun(2f);
+                otherController.BlockSuccess();
+            }
+            else
+            {
+                otherController.Damage(damage);
+                Debug.Log($"Inherited velocity: {inheritedVelocity}");
+                otherController.SetKnockback(inheritedVelocity);
+            }
+            
         }
         else
         {
@@ -217,9 +233,10 @@ public class HitBox : MonoBehaviour
     }
     void ResolveHitSword(GameObject otherSword, Collider2D otherCollider)
     {
-        if(otherCollider.bounds.size.y < col.bounds.size.y)
+        if(otherCollider.bounds.size.y > col.bounds.size.y)
         {
-            //this means other collider is a stab compared to this slash
+            //this means your stab got slashed, so
+            //Disarm();
         }
         else if(otherCollider.bounds.size == col.bounds.size)
         {
@@ -227,5 +244,7 @@ public class HitBox : MonoBehaviour
             //Parry();
         }
     }
+
+    
 
 }

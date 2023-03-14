@@ -9,11 +9,21 @@ public class PlayerState : MonoBehaviour
 
     State state;
     bool grounded;
+    BoxCollider2D col;
+    Vector2 defaultBoundSize;
+    Vector2 duckingBoundSize;
+    Vector2 defaultOffset;
+    Vector2 duckingOffset;
 
     public UnityEvent<State> onStateChanged;
     public UnityEvent<bool> onGroundedChanged;
 
     private void Start() {
+        col = GetComponent<BoxCollider2D>();
+        duckingBoundSize = new Vector2(col.size.y,col.size.x);
+        defaultBoundSize = col.size;
+        defaultOffset = col.offset;
+        duckingOffset = new Vector2(0,-duckingBoundSize.y/2);
         state = State.Active;
         grounded = true;
     }
@@ -35,6 +45,7 @@ public class PlayerState : MonoBehaviour
     //abstraction layer for state machine
     public void SetState(State s)
     {
+        DuckStateColliderChange(state,s);
         if(s != state){
             state = s;
             onStateChanged?.Invoke(state);
@@ -46,6 +57,32 @@ public class PlayerState : MonoBehaviour
     public State GetState()
     {
         return state;
+    }
+
+    void DuckStateColliderChange(State prev, State cur)
+    {
+        if(cur == State.Ducking)
+        {
+            col.size = duckingBoundSize;
+            col.offset = duckingOffset;
+        }
+        else if(cur != State.Ducking && prev == State.Ducking)
+        {
+            col.size = defaultBoundSize;
+            col.offset = defaultOffset;
+        }
+    }
+
+    public void Stun(float seconds)
+    {
+        StartCoroutine(StunForSeconds(seconds));
+    }
+
+    IEnumerator StunForSeconds(float s)
+    {
+        SetState(State.Stunned);
+        yield return new WaitForSeconds(s);
+        SetState(State.Active);
     }
 
     //State tests to implement:

@@ -37,6 +37,11 @@ public class OtherAnimController : MonoBehaviour
         animator.SetBool("StateDucking",ducking);
     }
 
+    public void SetInputX(float x)
+    {
+        animator.SetFloat("InputX", Mathf.Abs(x));
+    }
+
     void OnDirChange(PlayerController.AimDirection dir)
     {
         if(dir == PlayerController.AimDirection.East)
