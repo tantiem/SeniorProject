@@ -397,9 +397,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 6870952671135527017}
+  deadPlayer: {fileID: 1413485443563610591, guid: 3891b3f790557c043a3c4b0e2ea94929, type: 3}
   data: {fileID: 11400000, guid: dcb16dbc1af1f734ca74418450033122, type: 2}
   aim: {x: 0, y: 0}
   health: 0
+  swordCount: 0
   onBroadcastInputX:
     m_PersistentCalls:
       m_Calls:
@@ -455,8 +457,8 @@ MonoBehaviour:
     preTime: 0.3
     postTime: 0.3
   lowSlashAttackData:
-    pos: {x: 0.22, y: -0.3}
-    attackSize: {x: 2.3, y: 1.3}
+    pos: {x: 0.22, y: -0.39}
+    attackSize: {x: 2.3, y: 1}
     attackTime: 0.25
     attackDamage: 25
     preTime: 0.1

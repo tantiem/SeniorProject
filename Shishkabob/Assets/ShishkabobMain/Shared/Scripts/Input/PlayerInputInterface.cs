@@ -59,7 +59,7 @@ public class PlayerInputInterface : MonoBehaviour
     }
     public void Block(InputAction.CallbackContext context)
     {
-        if(context.performed)
+        if(context.started)
         {
             onBlock?.Invoke();
         }

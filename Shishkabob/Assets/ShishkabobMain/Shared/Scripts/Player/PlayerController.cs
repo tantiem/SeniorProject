@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
 
     public enum AimDirection {North, South, East, West, None};
     public GameObject player;
+    public GameObject deadPlayer;
     PlayerState state;
     PlayerMover mover;
     PlayerFightingInterface fighter;
@@ -34,16 +35,21 @@ public class PlayerController : MonoBehaviour
     ///action variables
     bool justJumped;
     bool wantToDuck;
-    Coroutine blockFail;
+    IEnumerator blockStop;
     //stats
     [SerializeField]
     float health;
+    [SerializeField]
+    int swordCount;
+    bool hasSword;
 
     public UnityEvent<float> onBroadcastInputX;
+    public UnityEvent onDeath;
 
 
     private void Awake() 
     {
+        deadPlayer.SetActive(false);
         health = 100;
         curCardinalAim = AimDirection.East;
         //faced direction can never be anything but east or west.
@@ -389,6 +395,7 @@ public class PlayerController : MonoBehaviour
     void SlashThrow()
     {
         //should already have validated state.
+        ReplaceSword();
         Debug.Log("SlashThrow");
     }
     void Slash()
@@ -407,6 +414,7 @@ public class PlayerController : MonoBehaviour
     void StabThrow()
     {
         //should already have validated state.
+        ReplaceSword();
         Debug.Log("StabThrow");
     }
 
@@ -439,22 +447,26 @@ public class PlayerController : MonoBehaviour
     /////////////////////////////////////////////////////////////////////////
     void BlockStart()
     {
-        Debug.Log("BlockStart");
-        state.SetState(PlayerState.State.Blocking);
-        blockFail = StartCoroutine(BlockStop());
-        //Valid states to block from:
-        //Active- grounded or not
+        if(!IsBlocking())
+        {
+            Debug.Log("BlockStart");
+            state.SetState(PlayerState.State.Blocking);
+            blockStop = BlockStop();
+            StartCoroutine(blockStop);
+            //Valid states to block from:
+            //Active- grounded or not
+        }
     }
     public void BlockSuccess()
     {
         //stop the blockstop routine that would case the block fail to occur.
-        StopCoroutine(blockFail);
+        StopCoroutine(blockStop);
         state.SetState(PlayerState.State.Active);
     }
     IEnumerator BlockStop()
     {        
         //wait a second to see if block properly, then stun for a second, then return.
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.3f);
         state.SetState(PlayerState.State.Stunned);
         yield return new WaitForSeconds(1f);
         state.SetState(PlayerState.State.Active);
@@ -498,7 +510,12 @@ public class PlayerController : MonoBehaviour
     }
     public void Damage(float amt)
     {
+        //potentially add an 'attacker' parameter to track who kills you
         health -= amt;
+        if(health <= 0)
+        {
+            Kill();
+        }
     }
     public Vector2 GetVelocity()
     {
@@ -514,7 +531,37 @@ public class PlayerController : MonoBehaviour
     }
     public void Stun(float seconds)
     {
+        state.Stun(2f);
+    }
+    public void Disarm()
+    {
+        ReplaceSword();
+    }
+    void Kill()
+    {
+        onDeath?.Invoke();
+        GameObject dead = Instantiate(deadPlayer,transform.position,Quaternion.identity) as GameObject;
+        dead.SetActive(true);
+        Rigidbody2D deadRb = dead.GetComponent<Rigidbody2D>();
+        deadRb.velocity = this.GetVelocity();
+        player.SetActive(false);
+
         
+    }
+    void ReplaceSword()
+    {
+        swordCount--;
+        hasSword = false;
+        StartCoroutine(GetNewSword(1f));
+    }
+
+    IEnumerator GetNewSword(float seconds)
+    {
+        if(swordCount>0)
+        {
+            yield return new WaitForSeconds(seconds);
+            hasSword = true;
+        }
     }
 
     

@@ -17,12 +17,12 @@ public class PlayerFightingInterface : MonoBehaviour
 
     public void GenerateStab(Vector2 position, Vector2 rightAlign,Vector2 speed)
     {
-        GenerateAttack(stabAttackData,position,rightAlign,speed);
+        GenerateAttack(stabAttackData,position,rightAlign,speed,true);
     }
 
     public void GenerateLowStab(Vector2 position, Vector2 rightAlign,Vector2 speed)
     {
-        GenerateAttack(lowStabAttackData,position,rightAlign,speed);
+        GenerateAttack(lowStabAttackData,position,rightAlign,speed,true);
     }
 
     public void GenerateLowSlash(Vector2 position, Vector2 rightAlign,Vector2 speed)
@@ -30,11 +30,11 @@ public class PlayerFightingInterface : MonoBehaviour
         GenerateAttack(lowSlashAttackData,position,rightAlign,speed);
     }
 
-    void GenerateAttack(AttackData data, Vector2 pos, Vector2 rightAlign, Vector2 speed)
+    void GenerateAttack(AttackData data, Vector2 pos, Vector2 rightAlign, Vector2 speed, bool isStab = false)
     {
         Vector2 alignedPos = AlignAttackDataPosToAim(rightAlign,data);
         
-        attackBox.Generate(data,pos + alignedPos,rightAlign,speed);
+        attackBox.Generate(data,pos + alignedPos,rightAlign,speed,isStab);
         
     }
     /// <summary>

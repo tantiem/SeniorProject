@@ -23,6 +23,8 @@ public class HitBox : MonoBehaviour
     Vector2 inheritedVelocity;
     public UnityEvent OnHitConnect;
 
+    bool isStab;
+
     private bool _ready;
     public bool ready
     {
@@ -82,8 +84,9 @@ public class HitBox : MonoBehaviour
     ///<summary>
     ///The public method for hitbox. Generate a hit box with dimensions, that does damage, at offset, for lifetime.
     ///</summary>
-    public void Generate(AttackData attackData, Vector2 offset, Vector2 rightAlign,Vector2 speed)
+    public void Generate(AttackData attackData, Vector2 offset, Vector2 rightAlign,Vector2 speed,bool isStab)
     {
+        this.isStab = isStab;
         inheritedVelocity = speed;
         SetDimensions(attackData.attackSize);
         SetDamage(attackData.attackDamage);
@@ -217,6 +220,13 @@ public class HitBox : MonoBehaviour
             {
                 ownerPlayerController.Stun(2f);
                 otherController.BlockSuccess();
+                if(isStab)
+                {
+                    //do half damage to the other person if you stab them even though they blocking
+                    otherController.Damage(damage/2);
+                    otherController.SetKnockback(inheritedVelocity/2);
+
+                }
             }
             else
             {
@@ -237,12 +247,18 @@ public class HitBox : MonoBehaviour
         {
             //this means your stab got slashed, so
             //Disarm();
+            ownerPlayerController.Disarm();
         }
         else if(otherCollider.bounds.size == col.bounds.size)
         {
             //this means both are equal
-            //Parry();
+            Parry();
         }
+    }
+
+    void Parry()
+    {
+        //add  audio cue I guess?
     }
 
     
