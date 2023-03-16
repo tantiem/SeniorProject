@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     public enum AimDirection {North, South, East, West, None};
     public GameObject player;
     public GameObject deadPlayer;
+    public GameObject stabThrow,slashThrow;
     PlayerState state;
     PlayerMover mover;
     PlayerFightingInterface fighter;
@@ -395,6 +396,7 @@ public class PlayerController : MonoBehaviour
     void SlashThrow()
     {
         //should already have validated state.
+        Instantiate(slashThrow,transform.position,Quaternion.identity);
         ReplaceSword();
         Debug.Log("SlashThrow");
     }
@@ -414,6 +416,7 @@ public class PlayerController : MonoBehaviour
     void StabThrow()
     {
         //should already have validated state.
+        Instantiate(stabThrow,transform.position,Quaternion.identity);
         ReplaceSword();
         Debug.Log("StabThrow");
     }
@@ -449,6 +452,7 @@ public class PlayerController : MonoBehaviour
     {
         if(!IsBlocking())
         {
+            Walk(0f); //stop walking if you are
             Debug.Log("BlockStart");
             state.SetState(PlayerState.State.Blocking);
             blockStop = BlockStop();
@@ -531,6 +535,7 @@ public class PlayerController : MonoBehaviour
     }
     public void Stun(float seconds)
     {
+        Walk(0f);
         state.Stun(2f);
     }
     public void Disarm()
