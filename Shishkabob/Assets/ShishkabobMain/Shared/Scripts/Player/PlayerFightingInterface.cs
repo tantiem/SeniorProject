@@ -22,7 +22,7 @@ public class PlayerFightingInterface : MonoBehaviour
 
     public void GenerateLowStab(Vector2 position, Vector2 rightAlign,Vector2 speed)
     {
-        GenerateAttack(lowStabAttackData,position,rightAlign,speed,true);
+        GenerateAttack(lowStabAttackData,position,rightAlign,speed,false); //not a stab for parry / disarm reasons
     }
 
     public void GenerateLowSlash(Vector2 position, Vector2 rightAlign,Vector2 speed)

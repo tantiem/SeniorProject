@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2172095564999985335}
   - component: {fileID: 2172095564999985334}
   - component: {fileID: 2172095564999985332}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: stabThrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}

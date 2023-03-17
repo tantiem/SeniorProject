@@ -179,21 +179,27 @@ public class HitBox : MonoBehaviour
                 //also, if the recipient is yourself, dont do anything
                 if(recipient != null && recipient.gameObject != owner )
                 {
-                    OnHitConnect?.Invoke();
-                    hitHappened = true;
+                    
                     if(recipient.tag == "Environment")
                     {
+                        OnHitConnect?.Invoke();
+                        hitHappened = true;
                         ResolveHitEnvironment();
                     }
                     else if(recipient.tag == "Player")
                     {
+                        OnHitConnect?.Invoke();
+                        hitHappened = true;
                         ResolveHitPlayer(recipient.gameObject);
                     }
                     else if(recipient.tag == "SwordHitBox")
                     {
-                        if(recipient.GetComponent<HitBox>().active)
+                        HitBox otherHitBox = recipient.GetComponent<HitBox>();
+                        if(otherHitBox.active)
                         {
-                            ResolveHitSword(recipient.gameObject,recipient);
+                            OnHitConnect?.Invoke();
+                            hitHappened = true;
+                            ResolveHitSword(recipient.gameObject,recipient,otherHitBox);
                         }
                     }
                 }
@@ -241,24 +247,30 @@ public class HitBox : MonoBehaviour
             Debug.LogError($"{this.gameObject} encountered an error trying to get PlayerController from {otherPlayer}",this);
         }
     }
-    void ResolveHitSword(GameObject otherSword, Collider2D otherCollider)
+    void ResolveHitSword(GameObject otherSword, Collider2D otherCollider,HitBox otherHitBox)
     {
-        if(otherCollider.bounds.size.y > col.bounds.size.y)
+        if(this.isStab && !otherHitBox.isStab)
         {
             //this means your stab got slashed, so
             //Disarm();
+            active = false;
             ownerPlayerController.Disarm();
+            
+
         }
-        else if(otherCollider.bounds.size == col.bounds.size)
+        else if(this.isStab && otherHitBox.isStab || !this.isStab && !otherHitBox.isStab)
         {
             //this means both are equal
             Parry();
+            otherHitBox.Parry();
         }
     }
 
     void Parry()
     {
         //add  audio cue I guess?
+        StartCoroutine(CancelAttack(0.75f));
+        Debug.Log("Parried!",this);
     }
 
     

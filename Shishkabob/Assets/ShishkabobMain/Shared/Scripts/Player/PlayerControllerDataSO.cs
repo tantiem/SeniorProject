@@ -19,4 +19,6 @@ public class PlayerControllerDataSO : ScriptableObject
     public float jumpEarlyStopSlowdownMult = 0.4f;
     public float blockLength = 1f;
     public float accelerateActionMultiplier = 1f;
+    public float baseThrowSpeed = 35f;
+    
 }

@@ -9,11 +9,9 @@ public class SlashThrowSwordLifetime : MonoBehaviour
 
     public void SetParameters(Vector2 velocity,float damage)
     {
+        rb = GetComponent<Rigidbody2D>();
         rb.velocity = velocity;
         this.damage = damage;
     }
-    private void Start() {
-        rb = GetComponent<Rigidbody2D>();
-        SetParameters(new Vector2(-50,25),50);
-    }
+    
 }

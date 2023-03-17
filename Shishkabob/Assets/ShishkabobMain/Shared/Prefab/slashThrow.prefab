@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8050104404222232936}
   - component: {fileID: 8050104404222232937}
   - component: {fileID: 8050104404222232950}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: slashThrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}

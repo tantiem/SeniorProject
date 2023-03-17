@@ -8,9 +8,9 @@ public class StabThrownSword : MonoBehaviour
     bool isCollide;
     Vector2 lastPos;
     public float fallSpeed;
+    float damage;
     private void Start() {
         rb = GetComponent<Rigidbody2D>();
-        rb.velocity = new Vector2(20,20);
     }
 
     private void FixedUpdate() {
@@ -19,6 +19,13 @@ public class StabThrownSword : MonoBehaviour
         {
             transform.right = rb.velocity;
         }
+    }
+
+    public void SetParameters(Vector2 velocity, float damage)
+    {
+        rb = GetComponent<Rigidbody2D>();
+        this.damage = damage;
+        rb.velocity = velocity;
     }
 
 }

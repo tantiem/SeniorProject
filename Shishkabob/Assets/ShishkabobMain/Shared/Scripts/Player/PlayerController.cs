@@ -396,7 +396,10 @@ public class PlayerController : MonoBehaviour
     void SlashThrow()
     {
         //should already have validated state.
-        Instantiate(slashThrow,transform.position,Quaternion.identity);
+        GameObject thrown = Instantiate(slashThrow,transform.position,Quaternion.identity) as GameObject;
+        Vector2 speed = GetThrowVelocity(mover.GetVelocity(),data.baseThrowSpeed,aim);
+
+        thrown.GetComponent<SlashThrowSwordLifetime>().SetParameters(speed,50);
         ReplaceSword();
         Debug.Log("SlashThrow");
     }
@@ -416,7 +419,10 @@ public class PlayerController : MonoBehaviour
     void StabThrow()
     {
         //should already have validated state.
-        Instantiate(stabThrow,transform.position,Quaternion.identity);
+        GameObject thrown = Instantiate(stabThrow,transform.position,Quaternion.identity) as GameObject;
+        Vector2 speed = GetThrowVelocity(mover.GetVelocity(),data.baseThrowSpeed,aim);
+
+        thrown.GetComponent<StabThrownSword>().SetParameters(speed,100);
         ReplaceSword();
         Debug.Log("StabThrow");
     }
@@ -540,6 +546,7 @@ public class PlayerController : MonoBehaviour
     }
     public void Disarm()
     {
+        Debug.Log("Disarmed!",this);
         ReplaceSword();
     }
     void Kill()
@@ -567,6 +574,15 @@ public class PlayerController : MonoBehaviour
             yield return new WaitForSeconds(seconds);
             hasSword = true;
         }
+    }
+
+    Vector2 GetThrowVelocity(Vector2 baseVelocity, float speedMult, Vector2 aimDirection)
+    {
+        if(aimDirection.sqrMagnitude < .25)
+        {
+            aimDirection = AimDirectionToOffset(curCardinalAim);
+        }
+        return baseVelocity + aimDirection * speedMult;
     }
 
     
