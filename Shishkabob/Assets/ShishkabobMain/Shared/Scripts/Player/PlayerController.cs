@@ -34,15 +34,25 @@ public class PlayerController : MonoBehaviour
     AimDirection facedDirection;
 
     ///action variables
+    /// 
+    /// 
     bool justJumped;
     bool wantToDuck;
     IEnumerator blockStop;
-    //stats
+    ///stats
+    /// 
+    /// 
     [SerializeField]
     float health;
     [SerializeField]
     int swordCount;
     bool hasSword;
+    float stamina;
+    int lives;
+
+    /// event broadcast
+    /// 
+    /// 
 
     public UnityEvent<float> onBroadcastInputX;
     public UnityEvent onDeath;
@@ -396,7 +406,8 @@ public class PlayerController : MonoBehaviour
     void SlashThrow()
     {
         //should already have validated state.
-        GameObject thrown = Instantiate(slashThrow,transform.position,Quaternion.identity) as GameObject;
+        Vector3 spawnPosition = transform.position + (Vector3)GetCurrentAim(aim) * data.throwOffsetMult;
+        GameObject thrown = Instantiate(slashThrow,spawnPosition,Quaternion.identity) as GameObject;
         Vector2 speed = GetThrowVelocity(mover.GetVelocity(),data.baseThrowSpeed,aim);
 
         thrown.GetComponent<SlashThrowSwordLifetime>().SetParameters(speed,50);
@@ -419,7 +430,8 @@ public class PlayerController : MonoBehaviour
     void StabThrow()
     {
         //should already have validated state.
-        GameObject thrown = Instantiate(stabThrow,transform.position,Quaternion.identity) as GameObject;
+        Vector3 spawnPosition = transform.position + (Vector3)GetCurrentAim(aim) * data.throwOffsetMult;
+        GameObject thrown = Instantiate(stabThrow,spawnPosition,Quaternion.identity) as GameObject;
         Vector2 speed = GetThrowVelocity(mover.GetVelocity(),data.baseThrowSpeed,aim);
 
         thrown.GetComponent<StabThrownSword>().SetParameters(speed,100);
@@ -508,7 +520,11 @@ public class PlayerController : MonoBehaviour
         //WIP, but probably from any state that isnt blocking or stunned.
         if(state.GetState() != PlayerState.State.Blocking || state.GetState() != PlayerState.State.Stunned)
         {
-            mover.AddVelocity(aim * data.accelerateActionMultiplier);
+            if(stamina >= data.accelerateStaminaUse)
+            {
+                mover.AddVelocity(aim * data.accelerateActionMultiplier);
+                stamina -= data.accelerateStaminaUse;
+            }
         }
     }
     
@@ -578,11 +594,16 @@ public class PlayerController : MonoBehaviour
 
     Vector2 GetThrowVelocity(Vector2 baseVelocity, float speedMult, Vector2 aimDirection)
     {
-        if(aimDirection.sqrMagnitude < .25)
+        aimDirection = GetCurrentAim(aimDirection);
+        return baseVelocity + aimDirection * speedMult;
+    }
+    Vector2 GetCurrentAim(Vector2 aimDirection)
+    {
+        if(aimDirection.sqrMagnitude < .9)
         {
             aimDirection = AimDirectionToOffset(curCardinalAim);
         }
-        return baseVelocity + aimDirection * speedMult;
+        return aimDirection;
     }
 
     

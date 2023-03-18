@@ -20,5 +20,8 @@ public class PlayerControllerDataSO : ScriptableObject
     public float blockLength = 1f;
     public float accelerateActionMultiplier = 1f;
     public float baseThrowSpeed = 35f;
+    public float throwOffsetMult = 2f;
+    public float staminaRechargeRate = 0.05f;
+    public float accelerateStaminaUse = 0.33f;
     
 }

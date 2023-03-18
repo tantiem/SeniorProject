@@ -21,3 +21,5 @@ MonoBehaviour:
   jumpEarlyStopSlowdownMult: 0.5
   blockLength: 1
   accelerateActionMultiplier: 12.33
+  baseThrowSpeed: 35
+  throwOffsetMult: 2.3
