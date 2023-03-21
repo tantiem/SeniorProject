@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SlashThrowSwordLifetime : MonoBehaviour
 {
+    [SerializeField]
     PlayerController owner;
     Rigidbody2D rb;
     float damage;
@@ -12,18 +13,25 @@ public class SlashThrowSwordLifetime : MonoBehaviour
 
     public int bounceCount  = 0;
 
-    public void SetParameters(Vector2 velocity,float damage)
+    public void SetParameters(Vector2 velocity,float damage,PlayerController owner)
     {
         rb = GetComponent<Rigidbody2D>();
         rb.velocity = velocity;
         this.damage = damage;
+        this.owner = owner;
     }
 
     private void OnCollisionEnter2D(Collision2D other) {
         bounceCount++;
         if(other.transform.CompareTag("Player"))
         {
-            other.transform.GetComponentInChildren<PlayerController>().Damage(damage);
+            PlayerController hitPlayer = other.transform.GetComponentInChildren<PlayerController>();
+            bool hitOwner = hitPlayer.gameObject == owner.gameObject;
+            if(!hitOwner || bounceCount > 1)
+            {
+                Debug.Log($"this craz happened, bounce number {bounceCount}");
+                hitPlayer.Damage(damage);
+            }
         }
 
         if(bounceCount >= 2)

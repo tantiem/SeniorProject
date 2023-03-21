@@ -89,11 +89,11 @@ public class CustomPlayerRigidbody : CustomRB
     {
         //This is not a great solution, pretty sure it is the cause of the pushback issue.
         //A better solution is to move the character that is in the wall, out of the wall lol
-        int hits = col.Cast(Vector2.zero,futureColResults,0f);
+        int hits = col.Cast(Vector2.zero,filter,futureColResults,0f);
         for(int i = 0; i < hits;i++)
         {
             //Cast a new cast per original hit, slower but more exact, i just want it to work
-            if(col.Cast(Vector2.zero,futureColResults,0f) > 0)
+            if(col.Cast(Vector2.zero,filter,futureColResults,0f) > 0)
             {
                 RaycastHit2D curHit = futureColResults[i];
                 //get the distance between

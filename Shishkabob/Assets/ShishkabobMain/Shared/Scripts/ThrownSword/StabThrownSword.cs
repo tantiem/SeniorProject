@@ -5,7 +5,7 @@ using UnityEngine;
 public class StabThrownSword : MonoBehaviour
 {
     Rigidbody2D rb;
-    bool isCollide;
+    public bool isCollide;
     Vector2 lastPos;
     public float fallSpeed;
     float damage;
@@ -46,6 +46,12 @@ public class StabThrownSword : MonoBehaviour
                 {
                     isCollide = true;
                 }
+                else if(results[0].transform.CompareTag("Player"))
+                {
+                    isCollide = true;
+                    PlayerController hitPlayer = results[0].transform.GetComponentInChildren<PlayerController>();
+                    hitPlayer.Damage(damage);
+                }
             }
         }
     }
@@ -55,6 +61,11 @@ public class StabThrownSword : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         this.damage = damage;
         rb.velocity = velocity;
+    }
+
+    public void RemoveFromPlay()
+    {
+        Destroy(this.gameObject);
     }
 
     

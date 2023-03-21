@@ -103,19 +103,7 @@ MonoBehaviour:
     m_ActionId: 81ceafb7-3fcf-40d9-bc36-8f053986b14b
     m_ActionName: UIActionMap/Navigate[/DualShock4GamepadHID/leftStick/up,/DualShock4GamepadHID/leftStick/down,/DualShock4GamepadHID/leftStick/left,/DualShock4GamepadHID/leftStick/right,/DualShock4GamepadHID/dpad,/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: -4378579291181565085}
-        m_TargetAssemblyTypeName: UIPlayerController, Assembly-CSharp
-        m_MethodName: Submit
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: 3126a900-451b-4a6d-bb68-87db28d3da90
     m_ActionName: UIActionMap/Submit[/DualShock4GamepadHID/buttonSouth,/Keyboard/enter]
   - m_PersistentCalls:
@@ -160,3 +148,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   leader: 0
+  currentUIState: 0
+  uiManager: {fileID: 0}

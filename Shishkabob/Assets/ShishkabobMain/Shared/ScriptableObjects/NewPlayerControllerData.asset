@@ -23,3 +23,6 @@ MonoBehaviour:
   accelerateActionMultiplier: 12.33
   baseThrowSpeed: 35
   throwOffsetMult: 2.3
+  staminaRechargeRate: 0.25
+  accelerateStaminaUse: 0.33
+  duckingFrictionPercent: 0.01

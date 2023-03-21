@@ -62,6 +62,7 @@ public class PlayerController : MonoBehaviour
     {
         deadPlayer.SetActive(false);
         health = 100;
+        swordCount = 3;
         curCardinalAim = AimDirection.East;
         //faced direction can never be anything but east or west.
         facedDirection = AimDirection.East;
@@ -73,6 +74,14 @@ public class PlayerController : MonoBehaviour
         inputInterface = player.GetComponent<PlayerInputInterface>();
 
         SetUpCallbacks();
+    }
+
+    private void Update() 
+    {
+        if(stamina < 1)
+        {
+            stamina += data.staminaRechargeRate * Time.deltaTime;  
+        }  
     }
 
     void SetUpCallbacks()
@@ -100,7 +109,7 @@ public class PlayerController : MonoBehaviour
     {
         if(newState == PlayerState.State.Ducking)
         {
-            mover.SetFrictionScaleToPercentDefault(0.5f);
+            mover.SetFrictionScaleToPercentDefault(data.duckingFrictionPercent);
         }
         if(newState != PlayerState.State.Ducking)
         {
@@ -247,42 +256,45 @@ public class PlayerController : MonoBehaviour
 
     void HandleSlashActions(InputAction.CallbackContext context)
     {
-        if(state.GetState() == PlayerState.State.Blocking || state.GetState() == PlayerState.State.Stunned)
+        if(swordCount > 0)
         {
-            //early return, this should never be allowed on attacks. Or really anything.
-            return;
-        }
-        else if(state.GetState() == PlayerState.State.Active)
-        {
-            //slash actions here
-            //does not matter if we are grounded or not.
-            if(context.started)
+            if(state.GetState() == PlayerState.State.Blocking || state.GetState() == PlayerState.State.Stunned)
             {
-                InitiateSlashAction();
+                //early return, this should never be allowed on attacks. Or really anything.
+                return;
             }
-            else if(context.performed)
+            else if(state.GetState() == PlayerState.State.Active)
             {
-                //this should be the throw action performed
-                SlashThrow();
-            }
-            else if(context.canceled)
-            {
-                Slash();
-            }
-        }
-        else if(state.GetState() == PlayerState.State.Ducking)
-        {
-            //low slash action here
-            //if we are ducking , we should be grounded. But just in case:
-            if(state.IsGrounded())
-            {
+                //slash actions here
+                //does not matter if we are grounded or not.
                 if(context.started)
                 {
-                    InitiateLowSlash();
+                    InitiateSlashAction();
                 }
-                else if(context.canceled || context.performed)
+                else if(context.performed)
                 {
-                    LowSlash();
+                    //this should be the throw action performed
+                    SlashThrow();
+                }
+                else if(context.canceled)
+                {
+                    Slash();
+                }
+            }
+            else if(state.GetState() == PlayerState.State.Ducking)
+            {
+                //low slash action here
+                //if we are ducking , we should be grounded. But just in case:
+                if(state.IsGrounded())
+                {
+                    if(context.started)
+                    {
+                        InitiateLowSlash();
+                    }
+                    else if(context.canceled || context.performed)
+                    {
+                        LowSlash();
+                    }
                 }
             }
         }
@@ -290,41 +302,44 @@ public class PlayerController : MonoBehaviour
 
     void HandleStabActions(InputAction.CallbackContext context)
     {
-        if(state.GetState() == PlayerState.State.Blocking || state.GetState() == PlayerState.State.Stunned)
+        if(swordCount > 0)
         {
-            //early return, this should never be allowed on attacks. Or really anything.
-            return;
-        }
-        else if(state.GetState() == PlayerState.State.Active)
-        {
-            //stab actions here
-            //does not matter if we are grounded or not.
-            if(context.started)
+            if(state.GetState() == PlayerState.State.Blocking || state.GetState() == PlayerState.State.Stunned)
             {
-                InitiateStabAction();
+                //early return, this should never be allowed on attacks. Or really anything.
+                return;
             }
-            else if(context.performed)
+            else if(state.GetState() == PlayerState.State.Active)
             {
-                StabThrow();
-            }
-            else if(context.canceled)
-            {
-                Stab();
-            }
-        }
-        else if(state.GetState() == PlayerState.State.Ducking)
-        {
-            //low slash action here
-            //if we are ducking , we should be grounded. But just in case:
-            if(state.IsGrounded())
-            {
+                //stab actions here
+                //does not matter if we are grounded or not.
                 if(context.started)
                 {
-                    InitiateLowStab();
+                    InitiateStabAction();
                 }
-                else if(context.canceled || context.performed)
+                else if(context.performed)
                 {
-                    LowStab();
+                    StabThrow();
+                }
+                else if(context.canceled)
+                {
+                    Stab();
+                }
+            }
+            else if(state.GetState() == PlayerState.State.Ducking)
+            {
+                //low slash action here
+                //if we are ducking , we should be grounded. But just in case:
+                if(state.IsGrounded())
+                {
+                    if(context.started)
+                    {
+                        InitiateLowStab();
+                    }
+                    else if(context.canceled || context.performed)
+                    {
+                        LowStab();
+                    }
                 }
             }
         }
@@ -410,7 +425,7 @@ public class PlayerController : MonoBehaviour
         GameObject thrown = Instantiate(slashThrow,spawnPosition,Quaternion.identity) as GameObject;
         Vector2 speed = GetThrowVelocity(mover.GetVelocity(),data.baseThrowSpeed,aim);
 
-        thrown.GetComponent<SlashThrowSwordLifetime>().SetParameters(speed,50);
+        thrown.GetComponent<SlashThrowSwordLifetime>().SetParameters(speed,50,this);
         ReplaceSword();
         Debug.Log("SlashThrow");
     }
@@ -576,6 +591,13 @@ public class PlayerController : MonoBehaviour
 
         
     }
+
+    public void Revive(Vector2 pos)
+    {
+        player.transform.position = pos;
+        health = 100;
+        swordCount = 3;
+    }
     void ReplaceSword()
     {
         swordCount--;
@@ -604,6 +626,23 @@ public class PlayerController : MonoBehaviour
             aimDirection = AimDirectionToOffset(curCardinalAim);
         }
         return aimDirection;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        if(other.transform.CompareTag("ThrownSword"))
+        {
+            StabThrownSword pickup = other.transform.GetComponent<StabThrownSword>();
+            if(pickup.isCollide)
+            {
+                AddSword(pickup);
+            }
+        }
+    }
+
+    public void AddSword(StabThrownSword swordToPickup)
+    {
+        swordCount++;
+        swordToPickup.RemoveFromPlay();
     }
 
     

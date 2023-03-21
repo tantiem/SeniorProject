@@ -23,5 +23,6 @@ public class PlayerControllerDataSO : ScriptableObject
     public float throwOffsetMult = 2f;
     public float staminaRechargeRate = 0.05f;
     public float accelerateStaminaUse = 0.33f;
+    public float duckingFrictionPercent = 0.1f;
     
 }
