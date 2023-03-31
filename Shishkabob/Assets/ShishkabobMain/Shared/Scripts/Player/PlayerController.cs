@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     public enum AimDirection {North, South, East, West, None};
     public GameObject player;
     public GameObject deadPlayer;
+    public GameObject visuals;
     public GameObject stabThrow,slashThrow;
     PlayerState state;
     PlayerMover mover;
@@ -48,14 +49,14 @@ public class PlayerController : MonoBehaviour
     int swordCount;
     bool hasSword;
     float stamina;
-    int lives;
+    public int lives;
 
     /// event broadcast
     /// 
     /// 
 
     public UnityEvent<float> onBroadcastInputX;
-    public UnityEvent onDeath;
+    public UnityEvent<PlayerController> onDeath;
 
 
     private void Awake() 
@@ -63,6 +64,7 @@ public class PlayerController : MonoBehaviour
         deadPlayer.SetActive(false);
         health = 100;
         swordCount = 3;
+        lives = 3;
         curCardinalAim = AimDirection.East;
         //faced direction can never be anything but east or west.
         facedDirection = AimDirection.East;
@@ -72,6 +74,8 @@ public class PlayerController : MonoBehaviour
         mover.Inititalize(player);
         
         inputInterface = player.GetComponent<PlayerInputInterface>();
+
+        onDeath.AddListener(GameObject.FindObjectOfType<SpawnManager>().RespawnPlayer);
 
         SetUpCallbacks();
     }
@@ -582,14 +586,12 @@ public class PlayerController : MonoBehaviour
     }
     void Kill()
     {
-        onDeath?.Invoke();
         GameObject dead = Instantiate(deadPlayer,transform.position,Quaternion.identity) as GameObject;
         dead.SetActive(true);
         Rigidbody2D deadRb = dead.GetComponent<Rigidbody2D>();
         deadRb.velocity = this.GetVelocity();
-        player.SetActive(false);
-
-        
+        onDeath?.Invoke(this);
+        DisableSelf();
     }
 
     public void Revive(Vector2 pos)
@@ -597,6 +599,8 @@ public class PlayerController : MonoBehaviour
         player.transform.position = pos;
         health = 100;
         swordCount = 3;
+        lives--;
+        EnableSelf();
     }
     void ReplaceSword()
     {
@@ -643,6 +647,18 @@ public class PlayerController : MonoBehaviour
     {
         swordCount++;
         swordToPickup.RemoveFromPlay();
+    }
+
+    void DisableSelf()
+    {
+        GetComponentInParent<PlayerInput>().DeactivateInput();
+        visuals.SetActive(false);
+    }
+
+    void EnableSelf()
+    {
+        GetComponentInParent<PlayerInput>().ActivateInput();
+        visuals.SetActive(true);
     }
 
     
