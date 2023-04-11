@@ -10,31 +10,31 @@ public class PlayerFightingInterface : MonoBehaviour
     public AttackData lowSlashAttackData;
     public AttackData lowStabAttackData;
 
-    public void GenerateSlash(Vector2 position,Vector2 rightAlign,Vector2 speed)
+    public bool GenerateSlash(Vector2 position,Vector2 rightAlign,Vector2 speed)
     {
-        GenerateAttack(slashAttackData,position,rightAlign,speed);
+        return GenerateAttack(slashAttackData,position,rightAlign,speed);
     }
 
-    public void GenerateStab(Vector2 position, Vector2 rightAlign,Vector2 speed)
+    public bool GenerateStab(Vector2 position, Vector2 rightAlign,Vector2 speed)
     {
-        GenerateAttack(stabAttackData,position,rightAlign,speed,true);
+        return GenerateAttack(stabAttackData,position,rightAlign,speed,true);
     }
 
-    public void GenerateLowStab(Vector2 position, Vector2 rightAlign,Vector2 speed)
+    public bool GenerateLowStab(Vector2 position, Vector2 rightAlign,Vector2 speed)
     {
-        GenerateAttack(lowStabAttackData,position,rightAlign,speed,false); //not a stab for parry / disarm reasons
+        return GenerateAttack(lowStabAttackData,position,rightAlign,speed,false); //not a stab for parry / disarm reasons
     }
 
-    public void GenerateLowSlash(Vector2 position, Vector2 rightAlign,Vector2 speed)
+    public bool GenerateLowSlash(Vector2 position, Vector2 rightAlign,Vector2 speed)
     {
-        GenerateAttack(lowSlashAttackData,position,rightAlign,speed);
+        return GenerateAttack(lowSlashAttackData,position,rightAlign,speed);
     }
 
-    void GenerateAttack(AttackData data, Vector2 pos, Vector2 rightAlign, Vector2 speed, bool isStab = false)
+    bool GenerateAttack(AttackData data, Vector2 pos, Vector2 rightAlign, Vector2 speed, bool isStab = false)
     {
         Vector2 alignedPos = AlignAttackDataPosToAim(rightAlign,data);
         
-        attackBox.Generate(data,pos + alignedPos,rightAlign,speed,isStab);
+        return attackBox.Generate(data,pos + alignedPos,rightAlign,speed,isStab);
         
     }
     /// <summary>

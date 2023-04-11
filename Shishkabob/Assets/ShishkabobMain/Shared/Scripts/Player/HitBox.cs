@@ -84,14 +84,14 @@ public class HitBox : MonoBehaviour
     ///<summary>
     ///The public method for hitbox. Generate a hit box with dimensions, that does damage, at offset, for lifetime.
     ///</summary>
-    public void Generate(AttackData attackData, Vector2 offset, Vector2 rightAlign,Vector2 speed,bool isStab)
+    public bool Generate(AttackData attackData, Vector2 offset, Vector2 rightAlign,Vector2 speed,bool isStab)
     {
         this.isStab = isStab;
         inheritedVelocity = speed;
         SetDimensions(attackData.attackSize);
         SetDamage(attackData.attackDamage);
         SetDirection(rightAlign);
-        Spawn(attackData.preTime,attackData.attackTime,attackData.postTime,offset);
+        return Spawn(attackData.preTime,attackData.attackTime,attackData.postTime,offset);
     }
     
     void SetDimensions(Vector2 dimensions)
@@ -112,20 +112,23 @@ public class HitBox : MonoBehaviour
     ///<summary>
     ///Set offset of hitbox and spawn it for lifetime seconds
     ///</summary>
-    void Spawn(float preTime, float lifetime, float postTime, Vector2 offset)
+    bool Spawn(float preTime, float lifetime, float postTime, Vector2 offset)
     {
         if(!active && ready)
         {
             this.offset = offset;
             StartCoroutine(AttackSequence(preTime,lifetime,postTime));
+            return true;
         }
         else if(active)
         {
             Debug.LogWarning("Trying to spawn an already active hitbox.",this);
+            return false;
         }
         else
         {
             Debug.LogWarning("Trying to attack when not ready",this);
+            return false;
         }
     }
 

@@ -18,6 +18,9 @@ public class PlayerController : MonoBehaviour
     public delegate void DirectionChange(AimDirection dir);
     public event DirectionChange onFacedDirChange;
 
+    public delegate void AttackEvent();
+    public event AttackEvent onWindUp,onThrow,onStab,onSlash,onUpStab,onDownStab,onUpSlash,onDownSlash,onLowSlash,onLowStab;
+
     public enum AimDirection {North, South, East, West, None};
     public GameObject player;
     public GameObject deadPlayer;
@@ -64,7 +67,7 @@ public class PlayerController : MonoBehaviour
         deadPlayer.SetActive(false);
         health = 100;
         swordCount = 3;
-        lives = 3;
+        lives = 1;
         curCardinalAim = AimDirection.East;
         //faced direction can never be anything but east or west.
         facedDirection = AimDirection.East;
@@ -131,6 +134,15 @@ public class PlayerController : MonoBehaviour
                     InitiateDuck();
                     wantToDuck = false;
                 }
+            }
+        }
+        //if not grounded while ducking, unduck.
+        else if(!grounded)
+        {
+            if(state.GetState() == PlayerState.State.Ducking)
+            {
+                state.SetState(PlayerState.State.Active);
+                wantToDuck = true;
             }
         }
     }
@@ -403,12 +415,14 @@ public class PlayerController : MonoBehaviour
 
     void InitiateSlashAction()
     {
+        onWindUp?.Invoke();
         //the cock back of a slash, either leading to a slash throw or a slash.
         //valid to be done from Active- grounded or not
         Debug.Log("InitiateSlashAction");
     }
     void InitiateStabAction()
     {
+        onWindUp?.Invoke();
         //the cock back of a slash, either leading to a stab throw or a stab.
         //valid to be done from Active- grounded or not
         Debug.Log("InitiateStabAction");
@@ -424,6 +438,8 @@ public class PlayerController : MonoBehaviour
     }
     void SlashThrow()
     {
+        onThrow?.Invoke();
+
         //should already have validated state.
         Vector3 spawnPosition = transform.position + (Vector3)GetCurrentAim(aim) * data.throwOffsetMult;
         GameObject thrown = Instantiate(slashThrow,spawnPosition,Quaternion.identity) as GameObject;
@@ -435,19 +451,53 @@ public class PlayerController : MonoBehaviour
     }
     void Slash()
     {
+        
+
         //should already have validated state.
         Debug.Log("Slash");
         Vector2 offset = AimDirectionToOffset(curCardinalAim);
-        fighter.GenerateSlash(offset,offset,offset + mover.GetVelocity());
+        if(fighter.GenerateSlash(offset,offset,offset + mover.GetVelocity()))
+        {
+            if(offset.y > 0)
+            {
+                onUpSlash?.Invoke();
+            }
+            else if(offset.y < 0)
+            {
+                onDownSlash?.Invoke();
+            }
+            else
+            {
+                onSlash?.Invoke();
+            }
+        }
     }
     void Stab()
     {
+        
+
         Debug.Log("Stab");
         Vector2 offset = AimDirectionToOffset(curCardinalAim);
-        fighter.GenerateStab(offset,offset,offset + mover.GetVelocity());
+        if(fighter.GenerateStab(offset,offset,offset + mover.GetVelocity()))
+        {
+            if(offset.y > 0)
+            {
+                onUpStab?.Invoke();
+            }
+            else if(offset.y < 0)
+            {
+                onDownStab?.Invoke();
+            }
+            else
+            {
+                onStab?.Invoke();
+            }
+        }
     }
     void StabThrow()
     {
+        onThrow?.Invoke();
+
         //should already have validated state.
         Vector3 spawnPosition = transform.position + (Vector3)GetCurrentAim(aim) * data.throwOffsetMult;
         GameObject thrown = Instantiate(stabThrow,spawnPosition,Quaternion.identity) as GameObject;
@@ -474,13 +524,20 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log("LowStab");
         Vector2 offset = AimDirectionToOffset(facedDirection);
-        fighter.GenerateLowStab(offset,offset,offset + mover.GetVelocity());
+        if(fighter.GenerateLowStab(offset,offset,offset + mover.GetVelocity()))
+        {
+            onLowStab?.Invoke();
+        }
     }
     void LowSlash()
     {
         Debug.Log("LowSlash");
         Vector2 offset = AimDirectionToOffset(facedDirection);
-        fighter.GenerateLowSlash(offset,offset,offset + mover.GetVelocity());
+        if(fighter.GenerateLowSlash(offset,offset,offset + mover.GetVelocity()))
+        {
+            onLowSlash?.Invoke();
+        }
+
     }
     /////////////////////////////////////////////////////////////////////////
     /////////////Simple one off actions, no intermediary handler/////////////

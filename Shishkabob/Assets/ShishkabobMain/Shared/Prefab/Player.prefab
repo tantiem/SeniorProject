@@ -306,6 +306,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efc0959b6bfcd2f4e96a6d2e02b4c58d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  duckingBoundSize: {x: 3.2, y: 1}
+  duckingOffset: {x: 0, y: -1.12}
   onStateChanged:
     m_PersistentCalls:
       m_Calls:
@@ -321,8 +323,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 6870952670525560082}
-        m_TargetAssemblyTypeName: OtherAnimController, Assembly-CSharp
+      - m_Target: {fileID: 5334430080106446598}
+        m_TargetAssemblyTypeName: SpriteAnimator, Assembly-CSharp
         m_MethodName: OnStateChange
         m_Mode: 0
         m_Arguments:
@@ -360,8 +362,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 6870952670525560082}
-        m_TargetAssemblyTypeName: OtherAnimController, Assembly-CSharp
+      - m_Target: {fileID: 5334430080106446598}
+        m_TargetAssemblyTypeName: SpriteAnimator, Assembly-CSharp
         m_MethodName: OnGroundedChanged
         m_Mode: 0
         m_Arguments:
@@ -405,10 +407,11 @@ MonoBehaviour:
   aim: {x: 0, y: 0}
   health: 0
   swordCount: 0
+  lives: 0
   onBroadcastInputX:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6870952670525560082}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: OtherAnimController, Assembly-CSharp
         m_MethodName: SetInputX
         m_Mode: 0
@@ -500,7 +503,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 2}
+  m_Size: {x: 1, y: 3.2}
   m_EdgeRadius: 0
 --- !u!1 &6870952670525560086
 GameObject:
@@ -513,7 +516,7 @@ GameObject:
   - component: {fileID: 6870952670525560083}
   - component: {fileID: 6870952670525560084}
   - component: {fileID: 6870952670525560085}
-  - component: {fileID: 6870952670525560082}
+  - component: {fileID: 5334430080106446598}
   m_Layer: 0
   m_Name: dude_run1
   m_TagString: Untagged
@@ -577,7 +580,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -404141623, guid: fba7f88c3885cf144bfd06de111bcf8e, type: 3}
+  m_Sprite: {fileID: -353400422, guid: d21f00d61dbded94797f65e04209967b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -598,7 +601,7 @@ Animator:
   m_GameObject: {fileID: 6870952670525560086}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: ee360cae0d972d440a2df2e93d2cf70e, type: 2}
+  m_Controller: {fileID: 9100000, guid: ab5938e00e0a14a4d94403897254d6ff, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -608,7 +611,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &6870952670525560082
+--- !u!114 &5334430080106446598
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -617,11 +620,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 6870952670525560086}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6dac8a9a771193488fb7503dabdcb1d, type: 3}
+  m_Script: {fileID: 11500000, guid: e083306d2f1674f40827519c6360a7ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 6870952670525560085}
   controller: {fileID: 6870952670353258843}
   rb: {fileID: 6870952671135527028}
+  animData:
+    block: block
+    blockfail: blockfail
+    crouch: crouch
+    fall: fall
+    hurt: hurt
+    idle: idle
+    jump: jump
+    land: land
+    preattack: preattack
+    run: run
+    slide: slide
+    stab: stab
+    slash: slash
+    throwwep: throwwep
+    walk: walk
 --- !u!1 &6870952670705849337
 GameObject:
   m_ObjectHideFlags: 0

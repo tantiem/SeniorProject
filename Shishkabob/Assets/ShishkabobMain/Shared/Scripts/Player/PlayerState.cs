@@ -11,19 +11,17 @@ public class PlayerState : MonoBehaviour
     bool grounded;
     BoxCollider2D col;
     Vector2 defaultBoundSize;
-    Vector2 duckingBoundSize;
+    public Vector2 duckingBoundSize;
     Vector2 defaultOffset;
-    Vector2 duckingOffset;
+    public Vector2 duckingOffset;
 
     public UnityEvent<State> onStateChanged;
     public UnityEvent<bool> onGroundedChanged;
 
     private void Start() {
         col = GetComponent<BoxCollider2D>();
-        duckingBoundSize = new Vector2(col.size.y,col.size.x);
         defaultBoundSize = col.size;
         defaultOffset = col.offset;
-        duckingOffset = new Vector2(0,-duckingBoundSize.y/2);
         state = State.Active;
         grounded = true;
     }
@@ -68,6 +66,8 @@ public class PlayerState : MonoBehaviour
         }
         else if(cur != State.Ducking && prev == State.Ducking)
         {
+
+            //unduck
             col.size = defaultBoundSize;
             col.offset = defaultOffset;
         }

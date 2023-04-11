@@ -204,7 +204,7 @@ public class CustomPlayerRigidbody : CustomRB
         DoGravity(dt);
     }
 
-
+/*
     private void OnDrawGizmos() 
     {
         if(futureColResults.Length > 0)
@@ -213,4 +213,5 @@ public class CustomPlayerRigidbody : CustomRB
             Gizmos.DrawCube(futureColResults[0].centroid,col.bounds.size);
         }
     }
+*/
 }
