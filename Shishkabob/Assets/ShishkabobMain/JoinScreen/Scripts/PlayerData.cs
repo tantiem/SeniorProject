@@ -8,30 +8,33 @@ using UnityEngine.InputSystem;
 public class PlayerData : MonoBehaviour
 {
     public bool leader;
-    public Image backPanel,frontPanel;
     public TextMeshProUGUI playerNumText,joinText;
 
-    Color backPanelBaseColor,frontPanelBaseColor,playerNumBaseColor;
-    Color backPanelActiveColor,frontPanelActiveColor,playerNumActiveColor;
+    public Color playerNumActiveColor,lightMeshColor,lightBulbColor,lightColor,chairColor;
+    public GameObject inactivePlayer,activePlayer,canLight,lightBulb,lightLight,chair;
+    SpriteRenderer canLightRend,lightBulbRend,lightLightRend,chairRend;
+
+    public Color playerColor;
     public PlayerInput pi;
 
     private void Awake() 
     {
-        backPanelBaseColor = backPanel.color;
-        frontPanelBaseColor = frontPanel.color;
-        playerNumBaseColor = playerNumText.color;
-
-        backPanelActiveColor = new Color(backPanelBaseColor.r,backPanelBaseColor.g,backPanelBaseColor.b,1);
-        frontPanelActiveColor = new Color(frontPanelBaseColor.r,frontPanelBaseColor.g,frontPanelBaseColor.b,1);
-        playerNumActiveColor = new Color(playerNumBaseColor.r/4,playerNumBaseColor.g*2,playerNumBaseColor.b,1);
+        canLightRend = canLight.GetComponent<SpriteRenderer>();
+        lightBulbRend = lightBulb.GetComponent<SpriteRenderer>();
+        lightLightRend = lightLight.GetComponent<SpriteRenderer>();
+        chairRend = chair.GetComponent<SpriteRenderer>();
     }
 
     public void Activate()
     {
-        backPanel.color = backPanelActiveColor;
-        frontPanel.color = frontPanelActiveColor;
         playerNumText.color = playerNumActiveColor;
         joinText.text = "READY!";
+        inactivePlayer.SetActive(false);
+        activePlayer.SetActive(true);
+        canLightRend.color = lightMeshColor;
+        lightBulbRend.color = lightBulbColor;
+        lightLightRend.color = lightColor;
+        chairRend.color = chairColor;
     }
 
     public void SetPlayerInput(PlayerInput pi)
