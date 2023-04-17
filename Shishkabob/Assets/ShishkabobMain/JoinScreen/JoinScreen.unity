@@ -1057,7 +1057,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 238975954}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1062882945}
+        m_TargetAssemblyTypeName: LevelLoader, Assembly-CSharp
+        m_MethodName: GoToSelected
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &238975954
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1237,6 +1249,7 @@ GameObject:
   m_Component:
   - component: {fileID: 370799686}
   - component: {fileID: 370799687}
+  - component: {fileID: 370799688}
   m_Layer: 0
   m_Name: View
   m_TagString: Untagged
@@ -1281,6 +1294,34 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &370799688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 370799685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a27a99c1447025a4998d9a096e32bd63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tranisitionAnimator: {fileID: 370799687}
+  onFinish:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1827985972}
+        m_TargetAssemblyTypeName: MapLoader, Assembly-CSharp
+        m_MethodName: TransitionToNextMap
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &375503291
 GameObject:
   m_ObjectHideFlags: 0
@@ -2964,7 +3005,7 @@ PrefabInstance:
     - target: {fileID: 2111491999016035339, guid: 082ac2164422ea34ba42e7f90e262c9f, type: 3}
       propertyPath: m_FirstSelected
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1063975895}
     - target: {fileID: 2111491999016035340, guid: 082ac2164422ea34ba42e7f90e262c9f, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -3459,12 +3500,12 @@ MonoBehaviour:
   lightBulbColor: {r: 0.7075472, g: 0.69731224, b: 0.4772606, a: 1}
   lightColor: {r: 1, g: 0.99607843, b: 0.9490196, a: 0.31764707}
   chairColor: {r: 0.4528302, g: 0.34015664, b: 0.0021359965, a: 1}
-  inactivePlayer: {fileID: 1756003811}
-  activePlayer: {fileID: 610454666}
-  canLight: {fileID: 1250565050}
-  lightBulb: {fileID: 409260463}
-  lightLight: {fileID: 58340009}
-  chair: {fileID: 428481585}
+  inactivePlayer: {fileID: 833068136}
+  activePlayer: {fileID: 375503291}
+  canLight: {fileID: 1043675363}
+  lightBulb: {fileID: 863811128}
+  lightLight: {fileID: 676036331}
+  chair: {fileID: 516105523}
   playerColor: {r: 0, g: 0.3511044, b: 0.81960785, a: 1}
   pi: {fileID: 0}
 --- !u!222 &955701582
@@ -4187,6 +4228,7 @@ GameObject:
   - component: {fileID: 1062882941}
   - component: {fileID: 1062882940}
   - component: {fileID: 1062882944}
+  - component: {fileID: 1062882945}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -4294,6 +4336,19 @@ MonoBehaviour:
   eventSystem: {fileID: 1010031889}
   goBackButton: {fileID: 0}
   readyButton: {fileID: 0}
+--- !u!114 &1062882945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1062882939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98ececccef8d5e4448a0d4fd200bdd4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectedLevelIndex: 0
 --- !u!1 &1063975895
 GameObject:
   m_ObjectHideFlags: 0
@@ -4376,7 +4431,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1063975898}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 370799688}
+        m_TargetAssemblyTypeName: SceneTransition, Assembly-CSharp
+        m_MethodName: TransitionOut
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1063975898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6001,6 +6068,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1827985971}
   - component: {fileID: 1827985970}
+  - component: {fileID: 1827985972}
+  - component: {fileID: 1827985973}
   m_Layer: 0
   m_Name: PERSISTENTPlayerInfo
   m_TagString: PlayerSpawnInfo
@@ -6037,6 +6106,33 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1827985972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1827985969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30682b0b1f4545d4ba6f63bc8601dc73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  indexes: 020000000200000002000000
+  randomizedOrder: 
+--- !u!114 &1827985973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1827985969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98ececccef8d5e4448a0d4fd200bdd4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectedLevelIndex: 0
 --- !u!1 &1896790757
 GameObject:
   m_ObjectHideFlags: 0
@@ -6269,18 +6365,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1827985970}
-        m_TargetAssemblyTypeName: PersistentPlayerLoader, Assembly-CSharp
-        m_MethodName: IncreasePlayerCount
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   m_PlayerLeftEvent:
     m_PersistentCalls:
       m_Calls:
@@ -6332,10 +6416,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unReadyPlayerBanners:
   - {fileID: 1260699914}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 955701581}
+  - {fileID: 961411469}
+  - {fileID: 80086150}
   readyPlayerBanners: []
+  playerAdded:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1827985970}
+        m_TargetAssemblyTypeName: PersistentPlayerLoader, Assembly-CSharp
+        m_MethodName: IncreasePlayerCount
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1993597120
 GameObject:
   m_ObjectHideFlags: 0

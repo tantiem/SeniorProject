@@ -62,6 +62,12 @@ public class PlayerController : MonoBehaviour
     public UnityEvent<PlayerController> onDeath;
 
 
+    public void SetColor(Color color)
+    {
+        //set color visual
+        visuals.GetComponentInChildren<SpriteRenderer>().color = color;
+    }
+
     private void Awake() 
     {
         deadPlayer.SetActive(false);

@@ -18,6 +18,8 @@ public class PlayerLoader : MonoBehaviour
             PlayerController controller = player.GetComponentInChildren<PlayerController>();
             spawner.players.Add(controller);
             cam.AddPOI(player.transform);
+
+            controller.SetColor(loader.playerData[i].color);
         }
 
         SceneManager.MoveGameObjectToScene(loader.gameObject, SceneManager.GetActiveScene());

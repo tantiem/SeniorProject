@@ -11,4 +11,9 @@ public class LevelLoader : MonoBehaviour
     {
         SceneManager.LoadScene(selectedLevelIndex,LoadSceneMode.Single);
     }
+
+    public void SetIndex(int i)
+    {
+        selectedLevelIndex = i;
+    }
 }
