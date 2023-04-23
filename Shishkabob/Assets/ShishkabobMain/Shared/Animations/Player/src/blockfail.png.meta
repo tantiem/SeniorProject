@@ -33,7 +33,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -49,7 +49,7 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 0
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -122,8 +122,8 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 333
-        height: 333
+        width: 500
+        height: 500
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -131,8 +131,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4b23579146809874a8db27b73f9fe7cb
-      internalID: 84820913
+      spriteID: b55587a6cb16ee541a1ee1b0ea18c5b5
+      internalID: 1012864384
       vertices: []
       indices: 
       edges: []
@@ -141,10 +141,10 @@ TextureImporter:
       name: blockfail_1
       rect:
         serializedVersion: 2
-        x: 333
+        x: 500
         y: 0
-        width: 333
-        height: 333
+        width: 500
+        height: 500
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -152,8 +152,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ecdaf3c8faf85724c8ae3dab1ec5fce9
-      internalID: 789448212
+      spriteID: 9392653cfb160f941a453f6394282ede
+      internalID: 1221166558
       vertices: []
       indices: 
       edges: []
@@ -162,10 +162,10 @@ TextureImporter:
       name: blockfail_2
       rect:
         serializedVersion: 2
-        x: 666
+        x: 1000
         y: 0
-        width: 333
-        height: 333
+        width: 500
+        height: 500
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -173,8 +173,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7021377313e5d294c81c7b3ed0bf2af5
-      internalID: -753964901
+      spriteID: 14213de48a5970644933df742f15b49c
+      internalID: -1796805693
       vertices: []
       indices: 
       edges: []
@@ -190,9 +190,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      blockfail_1: 789448212
-      blockfail_2: -753964901
-      blockfail_0: 84820913
+      blockfail_1: 1221166558
+      blockfail_2: -1796805693
+      blockfail_0: 1012864384
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

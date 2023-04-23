@@ -17,7 +17,7 @@ MonoBehaviour:
   walkAccelMult: 7.3
   airWalkSpeed: 3.08
   airWalkSpeedMult: 6.95
-  jumpSpeed: 20
+  jumpSpeed: 17.5
   jumpEarlyStopSlowdownMult: 0.5
   blockLength: 1
   accelerateActionMultiplier: 12.33

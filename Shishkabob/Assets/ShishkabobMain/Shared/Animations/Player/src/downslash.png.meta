@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 6b7ccae0227e2d046abd33432f93b8a2
+guid: b2eb844c851130f48a7c8d2817edc37e
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -117,7 +117,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: crouch_0
+      name: downslash_0
       rect:
         serializedVersion: 2
         x: 0
@@ -131,14 +131,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: aa7ac547b13c7574fbee19bcf5d20398
-      internalID: -1216552499
+      spriteID: 1858cd08fead7be44853c413a12a3ac1
+      internalID: -1042150404
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crouch_1
+      name: downslash_1
       rect:
         serializedVersion: 2
         x: 500
@@ -152,14 +152,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6126bba5086e4754782f516bd6fb6632
-      internalID: 1592534624
+      spriteID: 6203c74fb685b7f4d9ec813b644c3263
+      internalID: 1764882282
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crouch_2
+      name: downslash_2
       rect:
         serializedVersion: 2
         x: 1000
@@ -173,29 +173,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 88c7cc4ef2d0c084bad8e25732250698
-      internalID: 795634259
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: crouch_3
-      rect:
-        serializedVersion: 2
-        x: 1500
-        y: 0
-        width: 500
-        height: 500
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6cf4c27b41c942a409e5fa1419f60a7c
-      internalID: -102015157
+      spriteID: 0fcffc7f6ebc05f479974003e6239834
+      internalID: 987564635
       vertices: []
       indices: 
       edges: []
@@ -211,10 +190,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      crouch_2: 795634259
-      crouch_3: -102015157
-      crouch_0: -1216552499
-      crouch_1: 1592534624
+      downslash_1: 1764882282
+      downslash_0: -1042150404
+      downslash_2: 987564635
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

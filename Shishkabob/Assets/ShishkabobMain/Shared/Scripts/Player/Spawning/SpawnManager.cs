@@ -13,25 +13,14 @@ public class SpawnManager : MonoBehaviour
 
     public UnityEvent onWinner;
 
-    public Vector3 GetNewSpawnPoint()
+    public void SpawnPlayers()
     {
-        int randomIndex = Random.Range(0,spawns.Count);
-        return spawns[randomIndex].position;
-    }
-
-    public void RespawnPlayer(PlayerController pc)
-    {
-        if(pc.lives > 0)
+        int i  = 0;
+        foreach(PlayerController player in players)
         {
-            StartCoroutine(RespawnTime(3f,pc));
+            player.Spawn(spawns[i].position);
+            i++;
         }
-        CheckIfWin();
-    }
-
-    IEnumerator RespawnTime(float seconds,PlayerController pc)
-    {
-        yield return new WaitForSeconds(seconds);
-        pc.Revive(GetNewSpawnPoint());
     }
 
     void CheckIfWin()
@@ -57,7 +46,7 @@ public class SpawnManager : MonoBehaviour
         if(weHaveAWinner)
         {
             Debug.Log("a Winner is u");
-            winText.text = $"P{winnerIndex} WINS!\n y'all rest be lackin";
+            winText.text = $"P{winnerIndex} WINS!";
             StartCoroutine(WinTime(5f));
         }
     }

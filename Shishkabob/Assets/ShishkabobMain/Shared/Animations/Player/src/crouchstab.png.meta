@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 6b7ccae0227e2d046abd33432f93b8a2
+guid: a7c0095def569fa43bafd8a525f4347b
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -117,7 +117,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: crouch_0
+      name: crouchstab_0
       rect:
         serializedVersion: 2
         x: 0
@@ -131,14 +131,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: aa7ac547b13c7574fbee19bcf5d20398
-      internalID: -1216552499
+      spriteID: 8ff59e00cd6004843b62201b53f1eb3f
+      internalID: 563232686
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crouch_1
+      name: crouchstab_1
       rect:
         serializedVersion: 2
         x: 500
@@ -152,14 +152,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6126bba5086e4754782f516bd6fb6632
-      internalID: 1592534624
+      spriteID: 7fc1daf86c944f34a9446df677d4da98
+      internalID: -712014816
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crouch_2
+      name: crouchstab_2
       rect:
         serializedVersion: 2
         x: 1000
@@ -173,14 +173,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 88c7cc4ef2d0c084bad8e25732250698
-      internalID: 795634259
+      spriteID: 72eabf79b69b16d4d886dec35912e1e1
+      internalID: -741387604
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crouch_3
+      name: crouchstab_3
       rect:
         serializedVersion: 2
         x: 1500
@@ -194,8 +194,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6cf4c27b41c942a409e5fa1419f60a7c
-      internalID: -102015157
+      spriteID: c1df7ad64625e2440a6bb186201c2c52
+      internalID: 630203178
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crouchstab_4
+      rect:
+        serializedVersion: 2
+        x: 2000
+        y: 0
+        width: 500
+        height: 500
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2779ff5a807b8c3408d8592171ece37d
+      internalID: -263511419
       vertices: []
       indices: 
       edges: []
@@ -211,10 +232,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      crouch_2: 795634259
-      crouch_3: -102015157
-      crouch_0: -1216552499
-      crouch_1: 1592534624
+      crouchstab_3: 630203178
+      crouchstab_1: -712014816
+      crouchstab_4: -263511419
+      crouchstab_0: 563232686
+      crouchstab_2: -741387604
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -37,6 +37,8 @@ public class PlayerController : MonoBehaviour
     AimDirection curCardinalAim;
     AimDirection facedDirection;
 
+    PlayerInput pi;
+
     ///action variables
     /// 
     /// 
@@ -61,15 +63,26 @@ public class PlayerController : MonoBehaviour
     public UnityEvent<float> onBroadcastInputX;
     public UnityEvent<PlayerController> onDeath;
 
-
+//init shiz
     public void SetColor(Color color)
     {
         //set color visual
         visuals.GetComponentInChildren<SpriteRenderer>().color = color;
     }
+    public void SetInputDevice(InputDevice device)
+    {
+        pi.SwitchCurrentControlScheme(device);
+    }
+    public void Spawn(Vector3 pos)
+    {
+        player.transform.position = pos;
+    }
+    //
 
     private void Awake() 
     {
+        pi = GetComponentInParent<PlayerInput>();
+
         deadPlayer.SetActive(false);
         health = 100;
         swordCount = 3;
@@ -83,8 +96,6 @@ public class PlayerController : MonoBehaviour
         mover.Inititalize(player);
         
         inputInterface = player.GetComponent<PlayerInputInterface>();
-
-        onDeath.AddListener(GameObject.FindObjectOfType<SpawnManager>().RespawnPlayer);
 
         SetUpCallbacks();
     }

@@ -2263,7 +2263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98ececccef8d5e4448a0d4fd200bdd4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedLevelIndex: 1
+  selectedLevelIndex: 2
 --- !u!114 &1870295755 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2111491999016035338, guid: 082ac2164422ea34ba42e7f90e262c9f, type: 3}

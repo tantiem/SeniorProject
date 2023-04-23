@@ -9,7 +9,7 @@ public class JoinScreenManager : MonoBehaviour
     public List<PlayerData> unReadyPlayerBanners;
     public List<PlayerData> readyPlayerBanners;
 
-    public UnityEvent<Color> playerAdded;
+    public UnityEvent<Color,PlayerInput> playerAdded;
 
     public void OnPlayerJoin(PlayerInput pi)
     {
@@ -18,7 +18,7 @@ public class JoinScreenManager : MonoBehaviour
 
         pd.Activate();
         pd.SetPlayerInput(pi);
-        playerAdded?.Invoke(pd.playerColor);
+        playerAdded?.Invoke(pd.playerColor,pi);
     }
     public void OnPlayerExit(PlayerInput pi)
     {
