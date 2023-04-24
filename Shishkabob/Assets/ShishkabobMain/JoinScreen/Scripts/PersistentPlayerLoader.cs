@@ -26,6 +26,7 @@ public class PersistentPlayerLoader : MonoBehaviour
     public UnityEvent onDoneLoading;
 
     public List<PersistentPlayerData> playerData;
+    public int neededWins = 3;
 
 
     public int numPlayers = 0;
@@ -56,6 +57,12 @@ public class PersistentPlayerLoader : MonoBehaviour
             Debug.Log(playerData[numPlayers-1].device);
         }
         
+    }
+
+    public void ResetScores()
+    {
+        playerData.Clear();
+        numPlayers = 0;
     }
 
 

@@ -21,8 +21,11 @@ public class SmartFitFollowCam : MonoBehaviour
     }
     private void FixedUpdate() 
     {
+        if(POIs.Count > 0)
+        {
         centroid = GetCentroid(POIs);
         MoveToCentroid(acceleration,centroid);   
+        }
     }
     Vector3 Vector2Pos(Vector3 v3pos, Vector3 target)
     {

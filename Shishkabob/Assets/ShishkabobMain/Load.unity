@@ -565,7 +565,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30682b0b1f4545d4ba6f63bc8601dc73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  indexes: 030000000400000003000000
+  indexes: 040000000500000006000000
+  scoreScreen: 3
   randomizedOrder: 
 --- !u!114 &2123367526
 MonoBehaviour:
@@ -594,6 +595,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  neededWins: 3
   numPlayers: 0
   playerPrefab: {fileID: 6870952671135527017, guid: c2796050cc8a83747acb67dac4125c86, type: 3}
 --- !u!4 &2123367527

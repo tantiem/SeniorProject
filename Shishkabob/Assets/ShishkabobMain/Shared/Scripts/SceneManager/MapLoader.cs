@@ -11,6 +11,7 @@ public class MapLoader : MonoBehaviour
     //every map should be self sufficient, so that all this has to do is load the next map
 
     public List<int> indexes;
+    public int scoreScreen;
     LevelLoader loader;
 
 [SerializeField]
@@ -42,6 +43,11 @@ public class MapLoader : MonoBehaviour
         randomizedOrder[a] = randomizedOrder[b];
         randomizedOrder[b] = temp;
     }
+    public void GoToScoreScreen()
+    {
+        loader.SetIndex(scoreScreen);
+        loader.GoToSelected();
+    }
     public void TransitionToNextMap()
     {
         loader.SetIndex(randomizedOrder[curMapIndex]);
@@ -54,6 +60,11 @@ public class MapLoader : MonoBehaviour
     }
     void FinishTransition()
     {
+        loader.GoToSelected();
+    }
+    public void GoHome()
+    {
+        loader.SetIndex(2);
         loader.GoToSelected();
     }
 }

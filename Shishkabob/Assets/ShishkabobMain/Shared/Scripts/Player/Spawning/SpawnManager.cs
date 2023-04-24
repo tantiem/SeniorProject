@@ -44,10 +44,15 @@ public class SpawnManager : MonoBehaviour
                 }
             }
         }
-        if(weHaveAWinner)
+        if(winnerIndex == -1)
+        {
+            winText.text = $"EVERY1 DED";
+        }
+        else if(weHaveAWinner)
         {
             Debug.Log("a Winner is u");
             winText.text = $"P{winnerIndex} WINS!";
+            FindObjectOfType<PersistentInteractor>().AddWin(winnerIndex-1);
             StartCoroutine(WinTime(5f));
         }
     }

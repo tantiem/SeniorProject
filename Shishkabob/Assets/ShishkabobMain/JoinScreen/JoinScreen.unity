@@ -1312,7 +1312,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2111495316}
         m_TargetAssemblyTypeName: PersistentInteractor, Assembly-CSharp
-        m_MethodName: GoToNextMap
+        m_MethodName: GoToScoreScreen
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6871,7 +6871,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3665753580003193974, guid: 3d11ac3bae87a7d4688f18c309e14516, type: 3}
   m_PrefabInstance: {fileID: 3665753582112483554}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 3665753582112483555}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 537b4ae5813adf04eabb7f4df76ded7e, type: 3}
@@ -6934,3 +6934,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d11ac3bae87a7d4688f18c309e14516, type: 3}
+--- !u!1 &3665753582112483555 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3665753580003193968, guid: 3d11ac3bae87a7d4688f18c309e14516, type: 3}
+  m_PrefabInstance: {fileID: 3665753582112483554}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3665753582112483556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3665753582112483555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaf7119ad2128974a92753dd2608bbe3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
