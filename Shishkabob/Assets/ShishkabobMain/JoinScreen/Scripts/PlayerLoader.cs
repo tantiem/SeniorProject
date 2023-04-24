@@ -10,6 +10,8 @@ public class PlayerLoader : MonoBehaviour
     public SmartFitFollowCam cam;
     public PersistentInteractor persistentInteractor;
     public SpawnManager spawner;
+    public Transform UIHold;
+    public GameObject UIPrefab;
     void Start()
     {
         PersistentPlayerLoader loader = persistentInteractor.persistent;
@@ -19,9 +21,18 @@ public class PlayerLoader : MonoBehaviour
             PlayerController controller = player.GetComponentInChildren<PlayerController>();
             spawner.players.Add(controller);
             cam.AddPOI(player.transform);
+            controller.onCamDeath += cam.RemovePOI;
 
             controller.SetColor(loader.playerData[i].color);
             controller.SetInputDevice(loader.playerData[i].device);
+
+            GameObject UIInfo = Instantiate(UIPrefab,Vector3.zero,Quaternion.identity,UIHold) as GameObject;
+            UIInfoVisual UIFunc = UIInfo.GetComponent<UIInfoVisual>();
+            UIFunc.SetColor(loader.playerData[i].color);
+
+            controller.onHealthChange += UIFunc.OnHealthChanged;
+            controller.onStaminaChange += UIFunc.OnStaminaChanged;
+            controller.onSwordChange += UIFunc.OnSwordChanged;
 
             Debug.Log(loader.playerData[i].device);
 

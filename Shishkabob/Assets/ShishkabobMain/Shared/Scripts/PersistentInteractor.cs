@@ -23,4 +23,9 @@ public class PersistentInteractor : MonoBehaviour
     {
         persistent.IncreasePlayerCount(color,pi);
     }
+
+    public void OnDeath()
+    {
+        
+    }
 }

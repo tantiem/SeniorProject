@@ -21,6 +21,11 @@ public class PlayerController : MonoBehaviour
     public delegate void AttackEvent();
     public event AttackEvent onWindUp,onThrow,onStab,onSlash,onUpStab,onDownStab,onUpSlash,onDownSlash,onLowSlash,onLowStab;
 
+    public delegate void OnValueChangedFloat(float newValue);
+    public delegate void OnValueChangedInt(int newValue);
+    public event OnValueChangedFloat onHealthChange,onStaminaChange;
+    public event OnValueChangedInt onSwordChange;
+
     public enum AimDirection {North, South, East, West, None};
     public GameObject player;
     public GameObject deadPlayer;
@@ -59,15 +64,25 @@ public class PlayerController : MonoBehaviour
     /// event broadcast
     /// 
     /// 
+    /// 
+    
+    //getting damaged
+    
+    public ParticleSystem damageSystem;
 
     public UnityEvent<float> onBroadcastInputX;
     public UnityEvent<PlayerController> onDeath;
+    
+
+    public delegate void CamDeath(Transform poi);
+    public event CamDeath onCamDeath;
 
 //init shiz
     public void SetColor(Color color)
     {
         //set color visual
         visuals.GetComponentInChildren<SpriteRenderer>().color = color;
+        damageSystem.startColor = color;
     }
     public void SetInputDevice(InputDevice device)
     {
@@ -82,8 +97,7 @@ public class PlayerController : MonoBehaviour
     private void Awake() 
     {
         pi = GetComponentInParent<PlayerInput>();
-
-        deadPlayer.SetActive(false);
+        
         health = 100;
         swordCount = 3;
         lives = 1;
@@ -104,7 +118,8 @@ public class PlayerController : MonoBehaviour
     {
         if(stamina < 1)
         {
-            stamina += data.staminaRechargeRate * Time.deltaTime;  
+            stamina += data.staminaRechargeRate * Time.deltaTime;
+            onStaminaChange?.Invoke(stamina);
         }  
     }
 
@@ -466,6 +481,17 @@ public class PlayerController : MonoBehaviour
         ReplaceSword();
         Debug.Log("SlashThrow");
     }
+    void DisarmSlashThrow()
+    {
+        
+        Vector3 spawnPosition = transform.position + (Vector3)GetCurrentAim(aim) * data.throwOffsetMult;
+        GameObject thrown = Instantiate(slashThrow,spawnPosition,Quaternion.identity) as GameObject;
+        Vector2 speed = GetThrowVelocity(mover.GetVelocity(),data.baseThrowSpeed,aim);
+
+        thrown.GetComponent<SlashThrowSwordLifetime>().SetParameters(speed,50,this);
+        ReplaceSword();
+        Debug.Log("SlashThrow");
+    }
     void Slash()
     {
         
@@ -631,6 +657,8 @@ public class PlayerController : MonoBehaviour
     {
         //potentially add an 'attacker' parameter to track who kills you
         health -= amt;
+        onHealthChange?.Invoke(health);
+        damageSystem.Play();
         if(health <= 0)
         {
             Kill();
@@ -660,11 +688,12 @@ public class PlayerController : MonoBehaviour
     }
     void Kill()
     {
+        lives--;
         GameObject dead = Instantiate(deadPlayer,transform.position,Quaternion.identity) as GameObject;
         dead.SetActive(true);
-        Rigidbody2D deadRb = dead.GetComponent<Rigidbody2D>();
-        deadRb.velocity = this.GetVelocity();
+        dead.GetComponent<DeadPlayer>().Init(mover.GetVelocity());
         onDeath?.Invoke(this);
+        onCamDeath?.Invoke(player.transform);
         DisableSelf();
     }
 
@@ -679,6 +708,7 @@ public class PlayerController : MonoBehaviour
     void ReplaceSword()
     {
         swordCount--;
+        onSwordChange?.Invoke(swordCount);
         hasSword = false;
         StartCoroutine(GetNewSword(1f));
     }
@@ -715,6 +745,10 @@ public class PlayerController : MonoBehaviour
                 AddSword(pickup);
             }
         }
+        else if(other.transform.CompareTag("KillZone"))
+        {
+            Damage(200f);
+        }
     }
 
     public void AddSword(StabThrownSword swordToPickup)
@@ -726,7 +760,7 @@ public class PlayerController : MonoBehaviour
     void DisableSelf()
     {
         GetComponentInParent<PlayerInput>().DeactivateInput();
-        visuals.SetActive(false);
+        player.SetActive(false);
     }
 
     void EnableSelf()

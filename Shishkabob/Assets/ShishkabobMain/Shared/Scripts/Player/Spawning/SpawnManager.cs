@@ -19,11 +19,12 @@ public class SpawnManager : MonoBehaviour
         foreach(PlayerController player in players)
         {
             player.Spawn(spawns[i].position);
+            player.onDeath.AddListener(CheckIfWin);
             i++;
         }
     }
 
-    void CheckIfWin()
+    void CheckIfWin(PlayerController controller)
     {
         Debug.Log("CheckIfWin");
         bool weHaveAWinner = true;

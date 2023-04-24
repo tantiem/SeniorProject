@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum CustomPlayerAnimStates {BLOCK,BLOCKFAIL,CROUCH,FALL,HURT,IDLE,JUMP,LAND,PREATTACK,RUN,SLIDE,STAB,SLASH,THROWWEP,WALK}
+public enum CustomPlayerAnimStates {BLOCK,BLOCKFAIL,CROUCH,FALL,HURT,IDLE,JUMP,LAND,PREATTACK,RUN,SLIDE,STAB,SLASH,THROWWEP,WALK,CROUCHSLASH,CROUCHSTAB,UPSLASH,UPSTAB,DOWNSLASH,DOWNSTAB,LOWSLASH,LOWSTAB}
 public class SpriteAnimator : MonoBehaviour
 {
     public Animator animator;
@@ -14,7 +14,7 @@ public class SpriteAnimator : MonoBehaviour
     [System.Serializable]
     public struct AnimStates
     {
-        public string block,blockfail,crouch,fall,hurt,idle,jump,land,preattack,run,slide,stab,slash,throwwep,walk;
+        public string block,blockfail,crouch,fall,hurt,idle,jump,land,preattack,run,slide,stab,slash,throwwep,walk,crouchslash,crouchstab,upslash,upstab,downslash,downstab,lowslash,lowstab;
         public AnimProperties properties;
 
     }
@@ -43,6 +43,8 @@ public class SpriteAnimator : MonoBehaviour
         controller.onUpSlash += OnUpSlash;
         controller.onDownStab += OnDownStab;
         controller.onDownSlash += OnDownSlash;
+        controller.onLowSlash += OnLowSlash;
+        controller.onLowStab += OnLowStab;
     }
     private void FixedUpdate() 
     {
@@ -176,27 +178,41 @@ public class SpriteAnimator : MonoBehaviour
     }
     void OnUpStab()
     {
-
+        ChangeAnimStateTo(CustomPlayerAnimStates.UPSTAB);
+        float lengthOfState = animator.GetCurrentAnimatorStateInfo(0).length + 0.2f;
+        StartCoroutine(AttackingDone(lengthOfState));
     }
     void OnUpSlash()
     {
-        
+        ChangeAnimStateTo(CustomPlayerAnimStates.UPSLASH);
+        float lengthOfState = animator.GetCurrentAnimatorStateInfo(0).length + 0.2f;
+        StartCoroutine(AttackingDone(lengthOfState));
     }
     void OnDownStab()
     {
-        
+        ChangeAnimStateTo(CustomPlayerAnimStates.DOWNSTAB);
+        float lengthOfState = animator.GetCurrentAnimatorStateInfo(0).length + 0.2f;
+        StartCoroutine(AttackingDone(lengthOfState));
     }
     void OnDownSlash()
     {
-        
+        ChangeAnimStateTo(CustomPlayerAnimStates.DOWNSLASH);
+        float lengthOfState = animator.GetCurrentAnimatorStateInfo(0).length + 0.2f;
+        StartCoroutine(AttackingDone(lengthOfState));
     }
     void OnLowStab()
     {
-        
+        animData.properties.attacking = true;
+        ChangeAnimStateTo(CustomPlayerAnimStates.LOWSTAB);
+        float lengthOfState = animator.GetCurrentAnimatorStateInfo(0).length + 0.7f;
+        StartCoroutine(AttackingDone(lengthOfState));
     }
     void OnLowSlash()
     {
-        
+        animData.properties.attacking = true;
+        ChangeAnimStateTo(CustomPlayerAnimStates.LOWSLASH);
+        float lengthOfState = animator.GetCurrentAnimatorStateInfo(0).length + 0.5f;
+        StartCoroutine(AttackingDone(lengthOfState));
     }
 
     IEnumerator AttackingDone(float f)
@@ -304,6 +320,36 @@ public class SpriteAnimator : MonoBehaviour
             case CustomPlayerAnimStates.WALK:
             {
                 animator.Play(animData.walk);
+                break;
+            }
+            case CustomPlayerAnimStates.UPSLASH:
+            {
+                animator.Play(animData.upslash);
+                break;
+            }
+            case CustomPlayerAnimStates.UPSTAB:
+            {
+                animator.Play(animData.upstab);
+                break;
+            }
+            case CustomPlayerAnimStates.DOWNSLASH:
+            {
+                animator.Play(animData.downslash);
+                break;
+            }
+            case CustomPlayerAnimStates.DOWNSTAB:
+            {
+                animator.Play(animData.downstab);
+                break;
+            }
+            case CustomPlayerAnimStates.LOWSLASH:
+            {
+                animator.Play(animData.lowslash);
+                break;
+            }
+            case CustomPlayerAnimStates.LOWSTAB:
+            {
+                animator.Play(animData.lowstab);
                 break;
             }
         }

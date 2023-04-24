@@ -8,6 +8,7 @@ TagManager:
   - Environment
   - PlayerSpawnInfo
   - ThrownSword
+  - KillZone
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - Environment
   - ThrownWeapon
   - Dead
-  - 
+  - KillZone
   - 
   - 
   - 

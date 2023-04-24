@@ -17,5 +17,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/ShishkabobMain/GameplayScenes/TestScene/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/ShishkabobMain/GameplayScenes/Pit/Pit.unity
+    guid: 688e4fcf679409f4b8affc4b76605e29
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: f81b9db734d715e4793928f8ded08a62, type: 2}

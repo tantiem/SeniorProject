@@ -48,7 +48,7 @@ public class StabThrownSword : MonoBehaviour
                 }
                 else if(results[0].transform.CompareTag("Player"))
                 {
-                    isCollide = true;
+                    //isCollide = true;
                     PlayerController hitPlayer = results[0].transform.GetComponentInChildren<PlayerController>();
                     hitPlayer.Damage(damage);
                 }

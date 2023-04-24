@@ -486,12 +486,12 @@ MonoBehaviour:
   lightBulbColor: {r: 0.7075472, g: 0.69731224, b: 0.4772606, a: 1}
   lightColor: {r: 1, g: 0.99607843, b: 0.9490196, a: 0.31764707}
   chairColor: {r: 0.4528302, g: 0.34015664, b: 0.0021359965, a: 1}
-  inactivePlayer: {fileID: 1756003811}
-  activePlayer: {fileID: 610454666}
-  canLight: {fileID: 1250565050}
-  lightBulb: {fileID: 409260463}
-  lightLight: {fileID: 58340009}
-  chair: {fileID: 428481585}
+  inactivePlayer: {fileID: 1825678820}
+  activePlayer: {fileID: 1680181064}
+  canLight: {fileID: 723460587}
+  lightBulb: {fileID: 1249924058}
+  lightLight: {fileID: 39295775}
+  chair: {fileID: 1091101829}
   playerColor: {r: 0.1618999, g: 0.81960785, b: 0, a: 1}
   pi: {fileID: 0}
 --- !u!222 &80086151
@@ -3576,12 +3576,12 @@ MonoBehaviour:
   lightBulbColor: {r: 0.7075472, g: 0.69731224, b: 0.4772606, a: 1}
   lightColor: {r: 1, g: 0.99607843, b: 0.9490196, a: 0.31764707}
   chairColor: {r: 0.4528302, g: 0.34015664, b: 0.0021359965, a: 1}
-  inactivePlayer: {fileID: 1756003811}
-  activePlayer: {fileID: 610454666}
-  canLight: {fileID: 1250565050}
-  lightBulb: {fileID: 409260463}
-  lightLight: {fileID: 58340009}
-  chair: {fileID: 428481585}
+  inactivePlayer: {fileID: 167812853}
+  activePlayer: {fileID: 160481482}
+  canLight: {fileID: 1999845050}
+  lightBulb: {fileID: 2043344960}
+  lightLight: {fileID: 1993597120}
+  chair: {fileID: 516105523}
   playerColor: {r: 0.81960785, g: 0.08519922, b: 0, a: 1}
   pi: {fileID: 0}
 --- !u!222 &961411470
